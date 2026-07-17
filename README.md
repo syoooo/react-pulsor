@@ -4,8 +4,9 @@
 
 **Live demo → [react-pulsor.vercel.app](https://react-pulsor.vercel.app)**
 
-Composable React loading indicators. Grids, bars, dots and rings driven by
-**phase fields**, **motion envelopes** and **OKLab gradients** — one
+Composable React loading indicators. Grids, bars and dots — in lines or
+loops — driven by **phase fields**, **motion envelopes** and **OKLab
+gradients**, one
 compositor-only keyframe, zero dependencies, no CSS import.
 
 Most loaders are one baked-in animation with a size knob. Pulsor instead
@@ -231,7 +232,7 @@ anticipation wind-ups, above 1 for overshoot.
 
 Loaders need an exit. Set `state="success"` and a grid **morphs into a ✓**
 (the stencil is rasterized for any rows × cols); `state="error"` settles
-into a ✗ and shakes once. Bars, dots and rings settle whole into the state
+into a ✗ and shakes once. Bars and dots settle whole into the state
 color, staggered along the pattern's order. Both one-shot animations respect
 `prefers-reduced-motion`.
 

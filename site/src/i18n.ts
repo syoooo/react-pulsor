@@ -28,7 +28,7 @@ export const STRINGS: Record<Lang, Strings> = {
   en: {
     heroTitle: ["Loaders with ", "a pulse", "."],
     tagline:
-      "Grids, bars, dots and rings driven by phase fields, motion envelopes and OKLab gradients — one compositor-only keyframe that keeps ticking while your app does the heavy lifting.",
+      "Grids, bars and dots — laid in lines or riding loops — driven by phase fields, motion envelopes and OKLab gradients. One compositor-only keyframe that keeps ticking while your app does the heavy lifting.",
     copy: "copy",
     copied: "copied ✓",
     copyLink: "copy link",
@@ -49,7 +49,7 @@ export const STRINGS: Record<Lang, Strings> = {
   zh: {
     heroTitle: ["让加载", "有脉搏", "。"],
     tagline:
-      "网格、长条、圆点与圆环，由相位场、运动包络和OKLab渐变驱动。动画只有一条走合成器的keyframe，应用再忙，节拍也不乱。",
+      "网格、长条与圆点，可排成线，也可绕成环，由相位场、运动包络和OKLab渐变驱动。动画只有一条走合成器的keyframe，应用再忙，节拍也不乱。",
     copy: "复制",
     copied: "已复制 ✓",
     copyLink: "复制链接",
@@ -70,7 +70,7 @@ export const STRINGS: Record<Lang, Strings> = {
   ja: {
     heroTitle: ["ローダーに、", "鼓動", "を。"],
     tagline:
-      "グリッド、バー、ドット、リング。波のかたちも、明滅のカーブも、色の流れも、propひとつで変わる。走るのはコンポジタだけのkeyframe一本。アプリがどれほど忙しくても、鼓動は乱れない。",
+      "グリッド、バー、ドット。まっすぐにも、輪にも。波のかたちも、明滅のカーブも、色の流れも、propひとつで変わる。走るのはコンポジタだけのkeyframe一本。アプリがどれほど忙しくても、鼓動は乱れない。",
     copy: "コピー",
     copied: "コピー済み ✓",
     copyLink: "リンクをコピー",
