@@ -3,22 +3,10 @@ import { svgSnippet } from "react-pulsor"
 import type { SnippetElement, SnippetProps } from "react-pulsor"
 
 /**
- * Render one loop of the loader to a transparent animated GIF.
- *
- * GIF alpha is 1-bit, so partial opacity (dims, fades) cannot survive as-is.
- * The industry answer is matting: every α>0 pixel is pre-composited against
- * a matte color (here: the current stage color) and becomes fully opaque;
- * only α=0 pixels stay truly transparent. Zero noise, crisp edges —
- * pixel-perfect on backgrounds near the matte, a mild classic halo on very
- * different ones. Flip the stage to light before exporting for light
- * destinations.
+ * Render one loop of the loader to an animated GIF over a solid stage
+ * color (GIF's 1-bit alpha cannot carry the loader's partial-opacity
+ * fades — for a true-alpha asset, copy the SVG instead).
  */
-
-function hexToRgb(hex: string): [number, number, number] {
-  const n = parseInt(hex.replace("#", ""), 16)
-  return [(n >> 16) & 0xff, (n >> 8) & 0xff, n & 0xff]
-}
-
 export async function exportGif(
   element: SnippetElement,
   props: SnippetProps,
@@ -26,7 +14,7 @@ export async function exportGif(
 ): Promise<void> {
   const fps = opts.fps ?? 30
   const scale = opts.scale ?? 2
-  const [mr, mg, mb] = hexToRgb(opts.background ?? "#0f0f09")
+  const background = opts.background ?? "#0f0f09"
   const period = (props as { period?: number }).period ?? 900
   const frames = Math.min(90, Math.max(8, Math.round((period / 1000) * fps)))
   const delay = Math.round(period / frames)
@@ -52,33 +40,16 @@ export async function exportGif(
       const img = new Image()
       img.src = url
       await img.decode()
-      ctx.clearRect(0, 0, w, h)
+      ctx.fillStyle = background
+      ctx.fillRect(0, 0, w, h)
       ctx.drawImage(img, 0, 0, w, h)
     } finally {
       URL.revokeObjectURL(url)
     }
     const { data } = ctx.getImageData(0, 0, w, h)
-    // Matte composite: α>0 → opaque blend with the matte, α=0 stays clear.
-    for (let i = 0; i < data.length; i += 4) {
-      const a = data[i + 3]
-      if (a === 0) continue
-      const k = a / 255
-      data[i] = Math.round(data[i] * k + mr * (1 - k))
-      data[i + 1] = Math.round(data[i + 1] * k + mg * (1 - k))
-      data[i + 2] = Math.round(data[i + 2] * k + mb * (1 - k))
-      data[i + 3] = 255
-    }
-    const palette = quantize(data, 256, { format: "rgba4444" })
-    const index = applyPalette(data, palette, "rgba4444")
-    // The transparent slot moves between frames; find it each time.
-    const ti = palette.findIndex((p) => p[3] === 0)
-    gif.writeFrame(index, w, h, {
-      palette,
-      delay,
-      transparent: ti >= 0,
-      transparentIndex: Math.max(ti, 0),
-      dispose: 2,
-    })
+    const palette = quantize(data, 256)
+    const index = applyPalette(data, palette)
+    gif.writeFrame(index, w, h, { palette, delay })
   }
 
   gif.finish()

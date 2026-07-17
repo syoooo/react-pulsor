@@ -35,7 +35,7 @@ export const STRINGS: Record<Lang, Strings> = {
     copyCss: "copy css",
     copyJsx: "copy jsx",
     copySvg: "copy svg",
-    exportGif: "export gif — transparent, matted to the stage color",
+    exportGif: "export gif",
     gifDone: "gif saved ✓",
     customGradient: "custom gradient",
     addStop: "+ stop",
