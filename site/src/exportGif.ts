@@ -64,7 +64,9 @@ export async function exportGif(
     }
     const palette = quantize(data, 256, { format: "rgba4444" })
     const index = applyPalette(data, palette, "rgba4444")
-    gif.writeFrame(index, w, h, { palette, delay, transparent: true })
+    // dispose:2 clears to transparent between frames — without it, opaque
+    // pixels accumulate across the loop and the wave freezes all-bright
+    gif.writeFrame(index, w, h, { palette, delay, transparent: true, dispose: 2 })
   }
 
   gif.finish()
