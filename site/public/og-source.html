@@ -1,0 +1,64 @@
+<!doctype html>
+<!-- Source for og.png (1200×630). Regenerate:
+     chrome headless window-size=1200,630 screenshot=og.png og-source.html -->
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Silkscreen&display=swap" rel="stylesheet" />
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body {
+    width: 1200px; height: 630px; overflow: hidden;
+    background: #16150f; color: #e7e3d4;
+    font-family: "IBM Plex Mono", monospace;
+    display: flex; flex-direction: column; justify-content: space-between;
+    padding: 64px 72px 56px;
+    background-image: repeating-linear-gradient(0deg, transparent 0 3px, rgba(255,255,255,0.015) 3px 4px);
+  }
+  .frame { position: fixed; inset: 24px; border: 2px solid #e7e3d4; pointer-events: none; }
+  .tick { position: fixed; width: 18px; height: 18px; }
+  .brand { font-family: "Silkscreen", monospace; font-size: 88px; letter-spacing: 0.02em; line-height: 1; }
+  .brand .dot { color: #4cbb6c; }
+  .tag { font-size: 27px; font-weight: 500; color: #a29e8c; margin-top: 22px; }
+  .tag em { font-style: normal; color: #4cbb6c; }
+  .meta { font-size: 18px; color: #6e6b5b; letter-spacing: 0.12em; text-transform: uppercase; }
+  .loaders { display: flex; align-items: center; width: 100%; margin: 8px 0 14px; }
+  .ticker { display: grid; grid-auto-flow: column; gap: 9px; }
+  .ticker .col { display: grid; gap: 9px; }
+  .ticker i { width: 13px; height: 13px; border-radius: 3px; display: block; }
+</style>
+</head>
+<body>
+  <div class="frame"></div>
+  <div>
+    <div class="brand">PULSOR<span class="dot">_</span></div>
+    <div class="tag">Loaders with <em>a pulse</em>. Composable React loading indicators.</div>
+  </div>
+
+  <div class="loaders" id="loaders"></div>
+
+  <div class="meta">react · zero dependencies · compositor-only · MIT</div>
+
+<script>
+  // One wide sweep-right ticker, frozen mid-sweep. Phosphor green head,
+  // cream-olive tail — the chassis palette, not the aurora one.
+  const wrap = document.getElementById("loaders");
+  const COLS = 48, ROWS = 3, WAVES = 2;
+  const head = 0.72; // wavefront position, 0..1
+  let html = '<div class="ticker">';
+  for (let c = 0; c < COLS; c++) {
+    const t = c / COLS;
+    const d = ((head - t) % (1 / WAVES) + 1 / WAVES) % (1 / WAVES) * WAVES;
+    const level = Math.pow(1 - d, 2.6);
+    const o = (0.1 + 0.9 * level).toFixed(2);
+    // bright cells lean phosphor green, resting cells lean cream-olive
+    const color = level > 0.45 ? "#4cbb6c" : level > 0.18 ? "#8fae82" : "#e7e3d4";
+    html += '<div class="col">';
+    for (let r = 0; r < ROWS; r++) html += `<i style="background:${color};opacity:${o}"></i>`;
+    html += '</div>';
+  }
+  wrap.innerHTML = html + '</div>';
+</script>
+</body>
+</html>

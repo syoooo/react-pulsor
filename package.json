@@ -1,0 +1,66 @@
+{
+  "name": "react-pulsor",
+  "version": "0.1.0",
+  "description": "Composable React loading indicators — grids, bars and dots driven by phase fields, motion envelopes and OKLab gradients. Zero dependencies, compositor-only animation.",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.ja.md",
+    "README.zh-CN.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "site": "npm --workspace site run dev",
+    "site:build": "npm --workspace site run build",
+    "prepack": "npm run build"
+  },
+  "workspaces": [
+    "site"
+  ],
+  "keywords": [
+    "react",
+    "loader",
+    "loading",
+    "spinner",
+    "indicator",
+    "animation",
+    "gradient",
+    "oklab",
+    "equalizer",
+    "dots",
+    "grid",
+    "css-animation"
+  ],
+  "license": "MIT",
+  "author": "syo",
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "react": "^19.0.0",
+    "tsup": "^8.3.0",
+    "typescript": "^5.5.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/syoooo/react-pulsor.git"
+  },
+  "homepage": "https://github.com/syoooo/react-pulsor#readme",
+  "bugs": {
+    "url": "https://github.com/syoooo/react-pulsor/issues"
+  }
+}
