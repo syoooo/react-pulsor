@@ -228,43 +228,43 @@ export interface PulseBarsProps extends CoreProps, HTMLAttributes<HTMLSpanElemen
   stroke?: number
 }
 
-export interface PulseDotsProps extends CoreProps, HTMLAttributes<HTMLSpanElement> {
-  /** Phase field over the dots. Default `"wave"`. */
-  pattern?: DotsPattern
-  /** Number of dots. Default `3`. */
-  count?: number
-  /** Dot diameter in px. Default `7`. */
-  size?: number
-  /** Gap between dots in px. Default `4`. */
-  gap?: number
-  /** Dot corner radius in px. Defaults to `size / 2` (a circle). */
-  radius?: number
-}
+/**
+ * `"line"` — a row of dots (the typing indicator and its relatives).
+ * `"loop"` — elements spaced (uniformly by arc length) around a closed
+ * superellipse: dots when `length` equals `thickness`, ticks when elongated.
+ */
+export type DotsArrangement = "line" | "loop"
 
 /**
- * How ring elements sit on the path: `"tangent"` traces the outline (a
+ * How loop elements sit on the path: `"tangent"` traces the outline (a
  * dashed "O"), `"radial"` points at the center (clock-tick spinner).
  * Irrelevant for round dots (`length === thickness`).
  */
 export type RingAlign = "tangent" | "radial"
 
-export interface PulseRingProps extends CoreProps, HTMLAttributes<HTMLSpanElement> {
-  /** Phase field around the ring. Default `"wave"`. */
-  pattern?: RingPattern
-  /** Number of elements. Default `8`. */
+export interface PulseDotsProps extends CoreProps, HTMLAttributes<HTMLSpanElement> {
+  /** Phase field over the sequence. Default `"wave"`. */
+  pattern?: DotsPattern
+  /** Dots in a line or around a closed loop. Default `"line"`. */
+  arrangement?: DotsArrangement
+  /** Number of elements. Default `3` in a line, `8` on a loop. */
   count?: number
-  /** Ring height in px through element centers. Default `28`. */
+  /** Dot diameter in px (line only). Default `7`. */
+  size?: number
+  /** Gap between dots in px (line only). Default `4`. */
+  gap?: number
+  /** Loop height in px through element centers (loop only). Default `28`. */
   ringSize?: number
-  /** Ring width ÷ height: `1` circle, `<1` a narrower ring. Default `1`. */
+  /** Loop width ÷ height (loop only): `1` circle, `<1` narrower. Default `1`. */
   aspect?: number
-  /** Superellipse exponent: `2` ellipse, `4` squircle, `1` diamond. Default `2`. */
+  /** Superellipse exponent (loop only): `2` ellipse, `4` squircle, `1` diamond. Default `2`. */
   squareness?: number
-  /** Element alignment on the path. Default `"tangent"`. */
+  /** Element alignment on the path (loop only). Default `"tangent"`. */
   align?: RingAlign
-  /** Element length along its alignment in px. Default `6`. */
+  /** Element length along its alignment in px (loop only). Default `6`. */
   length?: number
-  /** Element thickness in px. Default `6` (equal to `length` = a dot). */
+  /** Element thickness in px (loop only). Default `6` (equal to `length` = a dot). */
   thickness?: number
-  /** Corner radius in px. Defaults to `min(length, thickness) / 2`. */
+  /** Corner radius in px. Defaults to a half-circle of the element. */
   radius?: number
 }

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react"
-import { cssSnippet, PulseBars, PulseDots, PulseGrid, PulseRing, palettes, recipes, svgSnippet } from "react-pulsor"
+import { cssSnippet, PulseBars, PulseDots, PulseGrid, palettes, recipes, svgSnippet } from "react-pulsor"
 import type { SnippetProps } from "react-pulsor"
 import type {
   AnimateMode,
@@ -7,7 +7,6 @@ import type {
   PulseBarsProps,
   PulseDotsProps,
   PulseGridProps,
-  PulseRingProps,
   Recipe,
   RecipeName,
 } from "react-pulsor"
@@ -39,7 +38,6 @@ import { highlightJsx, SegRow, Segmented, Section, Select, Slider, Swatches } fr
 function LoaderView({ element, props }: { element: ElementKind; props: Record<string, unknown> }) {
   if (element === "grid") return <PulseGrid {...(props as PulseGridProps)} />
   if (element === "bars") return <PulseBars {...(props as PulseBarsProps)} />
-  if (element === "ring") return <PulseRing {...(props as PulseRingProps)} />
   return <PulseDots {...(props as PulseDotsProps)} />
 }
 
@@ -94,7 +92,6 @@ export default function App() {
       grid: defaultConfig("grid"),
       bars: defaultConfig("bars"),
       dots: defaultConfig("dots"),
-      ring: defaultConfig("ring"),
     }
     if (shared) base[shared.element] = shared.config
     return base
@@ -302,7 +299,7 @@ export default function App() {
           <Section title="Element">
             <Segmented
               value={element}
-              options={["grid", "bars", "dots", "ring"] as const}
+              options={["grid", "bars", "dots"] as const}
               onChange={setElement}
             />
           </Section>
@@ -379,38 +376,61 @@ export default function App() {
             )}
             {element === "dots" && (
               <>
-                <Slider label="count" value={config.count} min={1} max={16} onChange={(v) => set({ count: v })} />
-                <Slider label="size" value={config.size} min={2} max={20} onChange={(v) => set({ size: v, radius: v / 2 })} format={px} />
-                <Slider label="gap" value={config.gap} min={0} max={16} onChange={(v) => set({ gap: v })} format={px} />
-              </>
-            )}
-            {element === "ring" && (
-              <>
-                <Slider label="count" value={config.count} min={3} max={24} onChange={(v) => set({ count: v })} />
-                <Slider label="ring size" value={config.ringSize} min={12} max={64} onChange={(v) => set({ ringSize: v })} format={px} />
-                <Slider label="aspect" value={config.aspect} min={0.6} max={1.4} step={0.02} onChange={(v) => set({ aspect: v })} />
-                <Slider label="squareness" value={config.squareness} min={1} max={6} step={0.1} onChange={(v) => set({ squareness: v })} />
-                <Slider
-                  label="length"
-                  value={config.length}
-                  min={2}
-                  max={16}
-                  onChange={(v) => set({ length: v, radius: Math.min(v, config.thickness) / 2 })}
-                  format={px}
-                />
-                <Slider
-                  label="thickness"
-                  value={config.thickness}
-                  min={2}
-                  max={12}
-                  onChange={(v) => set({ thickness: v, radius: Math.min(config.length, v) / 2 })}
-                  format={px}
-                />
                 <SegRow
-                  label="align"
-                  value={config.align}
-                  options={["tangent", "radial"] as const}
-                  onChange={(v) => set({ align: v })}
+                  label="arrangement"
+                  value={config.dotsArrangement}
+                  options={["line", "loop"] as const}
+                  onChange={(v) =>
+                    set(
+                      v === "loop"
+                        ? { dotsArrangement: v, count: 8, radius: Math.min(config.length, config.thickness) / 2 }
+                        : { dotsArrangement: v, count: 3, radius: config.size / 2 },
+                    )
+                  }
+                />
+                <Slider label="count" value={config.count} min={1} max={24} onChange={(v) => set({ count: v })} />
+                {config.dotsArrangement === "line" ? (
+                  <>
+                    <Slider label="size" value={config.size} min={2} max={20} onChange={(v) => set({ size: v, radius: v / 2 })} format={px} />
+                    <Slider label="gap" value={config.gap} min={0} max={16} onChange={(v) => set({ gap: v })} format={px} />
+                  </>
+                ) : (
+                  <>
+                    <Slider label="ring size" value={config.ringSize} min={12} max={64} onChange={(v) => set({ ringSize: v })} format={px} />
+                    <Slider label="aspect" value={config.aspect} min={0.6} max={1.4} step={0.02} onChange={(v) => set({ aspect: v })} />
+                    <Slider label="squareness" value={config.squareness} min={1} max={6} step={0.1} onChange={(v) => set({ squareness: v })} />
+                    <Slider
+                      label="length"
+                      value={config.length}
+                      min={2}
+                      max={16}
+                      onChange={(v) => set({ length: v, radius: Math.min(v, config.thickness) / 2 })}
+                      format={px}
+                    />
+                    <Slider
+                      label="thickness"
+                      value={config.thickness}
+                      min={2}
+                      max={12}
+                      onChange={(v) => set({ thickness: v, radius: Math.min(config.length, v) / 2 })}
+                      format={px}
+                    />
+                    <SegRow
+                      label="align"
+                      value={config.align}
+                      options={["tangent", "radial"] as const}
+                      onChange={(v) => set({ align: v })}
+                    />
+                  </>
+                )}
+                <Slider
+                  label="radius"
+                  value={config.radius}
+                  min={0}
+                  max={config.dotsArrangement === "loop" ? Math.min(config.length, config.thickness) / 2 : config.size / 2}
+                  step={0.5}
+                  onChange={(v) => set({ radius: v })}
+                  format={px}
                 />
               </>
             )}

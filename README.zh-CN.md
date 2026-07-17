@@ -8,7 +8,7 @@
 
 市面上的 loader 大多是一段写死的动画加一个尺寸参数。Pulsor 给你四个相互独立的旋钮，任意组合都是一个不一样的 loader：
 
-- **几何** —— 方块阵（`PulseGrid`）、直线排或条纹环的长条（`PulseBars`）、一排圆点（`PulseDots`）、沿超椭圆分布的元素（`PulseRing`）。
+- **几何** —— 方块阵（`PulseGrid`）、直线排或条纹环的长条（`PulseBars`）、一排圆点或沿超椭圆环分布的元素（`PulseDots`）。
 - **Pattern（相位场）** —— 波在图形上怎么走：平扫、对角线、涟漪、螺旋、山形折线、蛇形、种子随机，或全体同步。
 - **Envelope（包络）** —— 一次「亮起」的强度曲线，ADSR 式的 `attack` / `hold` / `release`，预设从轻柔的 `breathe` 到频闪的 `flash`，再到双峰的 `heartbeat`。
 - **色彩** —— 在 OKLab 空间采样的多停靠点渐变（sRGB 插值会发灰，OKLab 不会），可按空间位置取色，也可跟着动画相位走。
@@ -28,7 +28,7 @@ npm i react-pulsor
 ## 用法
 
 ```tsx
-import { PulseGrid, PulseBars, PulseDots, PulseRing } from "react-pulsor"
+import { PulseGrid, PulseBars, PulseDots } from "react-pulsor"
 
 // 4×4 涟漪、aurora 配色——默认的网格。
 <PulseGrid />
@@ -42,8 +42,8 @@ import { PulseGrid, PulseBars, PulseDots, PulseRing } from "react-pulsor"
 // 经典打字指示器，带一点弹簧感的跳跃。
 <PulseDots animate="bounce" easing="spring" period={800} />
 
-// 沿超椭圆的虚线环 spinner。
-<PulseRing count={12} length={7} thickness={3} aspect={0.88} squareness={2.6} />
+// 沿超椭圆环的虚线 spinner。
+<PulseDots arrangement="loop" count={12} length={7} thickness={3} aspect={0.88} squareness={2.6} />
 
 // 自定义渐变停靠点（在 OKLab 中采样）。
 <PulseGrid
@@ -146,30 +146,21 @@ rows × cols 的方块阵，由 pattern 扫过。
 
 ## `<PulseDots />`
 
-一排圆点——打字指示器和它的亲戚们。
+一排圆点（打字指示器和它的亲戚们）；设 `arrangement="loop"` 则元素沿超椭圆按弧长均匀分布——`length === thickness` 时是圆点，拉长就是刻度。`align="tangent"` 沿轮廓描线（虚线环），`align="radial"` 全部指向圆心（表针式）。
 
 | Prop | 类型 | 默认值 |
 | --- | --- | --- |
 | `pattern` | 同 bars | `"wave"` |
-| `count` | `number` | `3` |
-| `size` | `number` px——圆点直径 | `7` |
-| `gap` | `number` px | `4` |
-| `radius` | `number` px | `size / 2` |
-
-## `<PulseRing />`
-
-沿超椭圆按弧长均匀分布的元素——`length === thickness` 时是圆点，拉长就是刻度。`align="tangent"` 沿轮廓描线（虚线环），`align="radial"` 全部指向圆心（表针式）。
-
-| Prop | 类型 | 默认值 |
-| --- | --- | --- |
-| `pattern` | 同 bars | `"wave"` |
-| `count` | `number` | `8` |
-| `ringSize` | `number` px——环高 | `28` |
+| `arrangement` | `"line" \| "loop"` | `"line"` |
+| `count` | `number` | line `3`，loop `8` |
+| `size` | `number` px——圆点直径（仅 line） | `7` |
+| `gap` | `number` px（仅 line） | `4` |
+| `ringSize` | `number` px——环高（仅 loop） | `28` |
 | `aspect` | `number`——宽 ÷ 高 | `1` |
 | `squareness` | `number`——`2` 椭圆、`4` 方圆、`1` 菱形 | `2` |
-| `align` | `"tangent" \| "radial"` | `"tangent"` |
-| `length` / `thickness` | `number` px | `6` / `6` |
-| `radius` | `number` px | `min(length, thickness) / 2` |
+| `align` | `"tangent" \| "radial"`（仅 loop） | `"tangent"` |
+| `length` / `thickness` | `number` px——loop 元素尺寸 | `6` / `6` |
+| `radius` | `number` px | 元素的一半 |
 
 ## Pattern 的原理
 

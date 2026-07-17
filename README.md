@@ -12,8 +12,8 @@ Most loaders are one baked-in animation with a size knob. Pulsor instead
 gives you four orthogonal dials, and every combination is a different loader:
 
 - **Geometry** — a cell grid (`PulseGrid`), bars in a line or stacked into a
-  striped letter O (`PulseBars`), a row of dots (`PulseDots`), or elements
-  around a superellipse ring (`PulseRing`).
+  striped loop (`PulseBars`), and dots in a row or riding a superellipse
+  loop (`PulseDots`).
 - **Pattern** — the *phase field*: how the wave travels the figure. Sweeps,
   diagonals, ripples, spirals, chevrons, boustrophedon snakes, seeded
   sparkle, or everything in sync.
@@ -45,7 +45,7 @@ npm i react-pulsor
 ## Usage
 
 ```tsx
-import { PulseGrid, PulseBars, PulseDots, PulseRing } from "react-pulsor"
+import { PulseGrid, PulseBars, PulseDots } from "react-pulsor"
 
 // A 4×4 ripple, aurora palette — the default grid.
 <PulseGrid />
@@ -59,8 +59,8 @@ import { PulseGrid, PulseBars, PulseDots, PulseRing } from "react-pulsor"
 // The classic typing indicator, with a springy hop.
 <PulseDots animate="bounce" easing="spring" period={800} />
 
-// A dashed-O spinner around a superellipse.
-<PulseRing count={12} length={7} thickness={3} aspect={0.88} squareness={2.6} />
+// A dashed-O spinner around a superellipse loop.
+<PulseDots arrangement="loop" count={12} length={7} thickness={3} aspect={0.88} squareness={2.6} />
 
 // Custom gradient stops (sampled in OKLab).
 <PulseGrid
@@ -166,34 +166,25 @@ match anything from a round badge to a typeface's O. Pair with
 
 ## `<PulseDots />`
 
-A row of dots — the typing indicator and its relatives.
+A row of dots (the typing indicator and its relatives), or — with
+`arrangement="loop"` — elements spaced uniformly by arc length around a
+superellipse loop: dots when `length === thickness`, ticks when elongated.
+`align="tangent"` traces the outline like a dashed O; `align="radial"`
+points every tick at the center, clock-style.
 
-| Prop     | Type     | Default    |
-| -------- | -------- | ---------- |
-| `pattern`| same as bars | `"wave"` |
-| `count`  | `number` | `3`        |
-| `size`   | `number` px — dot diameter | `7` |
-| `gap`    | `number` px | `4`     |
-| `radius` | `number` px | `size / 2` |
-
-## `<PulseRing />`
-
-Elements spaced (uniformly by arc length) around a superellipse ring — dots
-when `length === thickness`, ticks when elongated. `align="tangent"` traces
-the outline like a dashed O; `align="radial"` points every tick at the
-center, clock-style.
-
-| Prop         | Type     | Default     |
-| ------------ | -------- | ----------- |
-| `pattern`    | same as bars | `"wave"` |
-| `count`      | `number` | `8`         |
-| `ringSize`   | `number` px — ring height | `28` |
-| `aspect`     | `number` — width ÷ height | `1` |
-| `squareness` | `number` — `2` ellipse, `4` squircle, `1` diamond | `2` |
-| `align`      | `"tangent" \| "radial"` | `"tangent"` |
-| `length`     | `number` px | `6`      |
-| `thickness`  | `number` px | `6`      |
-| `radius`     | `number` px | `min(length, thickness) / 2` |
+| Prop          | Type     | Default    |
+| ------------- | -------- | ---------- |
+| `pattern`     | same as bars | `"wave"` |
+| `arrangement` | `"line" \| "loop"` | `"line"` |
+| `count`       | `number` | `3` line, `8` loop |
+| `size`        | `number` px — dot diameter (line only) | `7` |
+| `gap`         | `number` px (line only) | `4` |
+| `ringSize`    | `number` px — loop height (loop only) | `28` |
+| `aspect`      | `number` — loop width ÷ height | `1` |
+| `squareness`  | `number` — `2` ellipse, `4` squircle, `1` diamond | `2` |
+| `align`       | `"tangent" \| "radial"` (loop only) | `"tangent"` |
+| `length` / `thickness` | `number` px — loop element box | `6` / `6` |
+| `radius`      | `number` px | half the element |
 
 ## How patterns work
 

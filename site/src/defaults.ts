@@ -1,13 +1,12 @@
 import { motionDefaults, palettes } from "react-pulsor"
 import type { AnimateMode, GradientStop, Recipe } from "react-pulsor"
 
-export type ElementKind = "grid" | "bars" | "dots" | "ring"
+export type ElementKind = "grid" | "bars" | "dots"
 
 export const COMPONENT_NAMES: Record<ElementKind, string> = {
   grid: "PulseGrid",
   bars: "PulseBars",
   dots: "PulseDots",
-  ring: "PulseRing",
 }
 
 export const GRID_PATTERNS = [
@@ -57,6 +56,7 @@ export interface Config {
   length: number
   origin: "center" | "start" | "end"
   barsArrangement: "line" | "loop"
+  dotsArrangement: "line" | "loop"
   stroke: number
   align: "tangent" | "radial"
   aspect: number
@@ -101,7 +101,6 @@ export function ampFallback(
 ) {
   if (element === "grid") return c.cellSize
   if (element === "bars") return c.length / 2
-  if (element === "ring") return c.length * 0.9
   return c.size * 0.9
 }
 
@@ -111,12 +110,13 @@ export function defaultConfig(element: ElementKind): Config {
     rows: 4,
     cols: 4,
     cellSize: 6,
-    count: element === "bars" ? 5 : element === "ring" ? 8 : 3,
+    count: element === "bars" ? 5 : 3,
     orientation: "vertical",
-    thickness: element === "ring" ? 6 : 4,
-    length: element === "ring" ? 6 : 18,
+    thickness: element === "bars" ? 4 : 6,
+    length: element === "bars" ? 18 : 6,
     origin: "center",
     barsArrangement: "line",
+    dotsArrangement: "line",
     stroke: 8.4,
     align: "tangent",
     aspect: 1,
@@ -124,7 +124,7 @@ export function defaultConfig(element: ElementKind): Config {
     ringSize: 28,
     size: 7,
     gap: element === "dots" ? 4 : 3,
-    radius: element === "grid" ? 1.5 : element === "dots" ? 3.5 : element === "ring" ? 3 : 2,
+    radius: element === "grid" ? 1.5 : element === "dots" ? 3.5 : 2,
     paletteMode: "preset",
     palettePreset: "aurora",
     customStops: ["#5EE7DF", "#F98BD9"],
@@ -225,9 +225,10 @@ export function propsFor(element: ElementKind, c: Config): Record<string, unknow
       ...shared,
     }
   }
-  if (element === "ring") {
+  if (c.dotsArrangement === "loop") {
     return {
       pattern: c.pattern,
+      arrangement: "loop",
       count: c.count,
       ringSize: c.ringSize,
       aspect: c.aspect,
@@ -255,7 +256,14 @@ function libDefaults(element: ElementKind, c: Config): Record<string, unknown> {
     palette: "aurora",
     colorBy: "position",
     gradientAngle: 45,
-    animate: element === "bars" ? "stretch" : element === "dots" ? "scale" : "fade",
+    animate:
+      element === "bars"
+        ? "stretch"
+        : element === "dots"
+          ? c.dotsArrangement === "loop"
+            ? "fade"
+            : "scale"
+          : "fade",
     envelope: "pulse",
     period: 900,
     waves: 1,
@@ -284,21 +292,22 @@ function libDefaults(element: ElementKind, c: Config): Record<string, unknown> {
       ...shared,
     }
   }
-  if (element === "ring") {
-    return {
-      pattern: "wave",
-      count: 8,
-      ringSize: 28,
-      aspect: 1,
-      squareness: 2,
-      align: "tangent",
-      length: 6,
-      thickness: 6,
-      radius: Math.min(c.length, c.thickness) / 2,
-      ...shared,
-    }
+  const loop = c.dotsArrangement === "loop"
+  return {
+    pattern: "wave",
+    arrangement: "line",
+    count: loop ? 8 : 3,
+    size: 7,
+    gap: 4,
+    ringSize: 28,
+    aspect: 1,
+    squareness: 2,
+    align: "tangent",
+    length: 6,
+    thickness: 6,
+    radius: loop ? Math.min(c.length, c.thickness) / 2 : c.size / 2,
+    ...shared,
   }
-  return { pattern: "wave", count: 3, size: 7, gap: 4, radius: c.size / 2, ...shared }
 }
 
 function fmtValue(v: unknown): string {
@@ -355,8 +364,25 @@ export function decodeShare(hash: string): { element: ElementKind; config: Confi
       e: ElementKind
       c: Partial<Config>
     }
-    if (!(payload.e in COMPONENT_NAMES)) return null
-    return { element: payload.e, config: { ...defaultConfig(payload.e), ...payload.c } }
+    // legacy share links from when loop dots were their own "ring" element:
+    // their diffs were taken against the old ring defaults, so rebuild that
+    // base before applying the stored diff
+    const legacy = (payload.e as string) === "ring"
+    const el = legacy ? "dots" : payload.e
+    if (!(el in COMPONENT_NAMES)) return null
+    const base = defaultConfig(el)
+    if (legacy) {
+      Object.assign(base, {
+        dotsArrangement: "loop",
+        count: 8,
+        thickness: 6,
+        length: 6,
+        radius: 3,
+        animate: "fade",
+        ...modeDefaults("fade", 6 * 0.9),
+      })
+    }
+    return { element: el, config: { ...base, ...payload.c } }
   } catch {
     return null
   }
@@ -405,10 +431,12 @@ export function recipeToConfig(recipe: Recipe): Config {
     if (p.orientation === undefined) c.orientation = "horizontal"
     if (p.stroke === undefined) c.stroke = Math.round(c.ringSize * 0.3 * 100) / 100
   }
-  if (element === "ring" && p.radius === undefined) {
-    c.radius = Math.min(c.length, c.thickness) / 2
+  if (element === "dots" && p.arrangement === "loop") {
+    c.dotsArrangement = "loop"
+    if (p.count === undefined) c.count = 8
+    if (p.radius === undefined) c.radius = Math.min(c.length, c.thickness) / 2
   }
-  if (element === "dots" && p.radius === undefined && p.size !== undefined) {
+  if (element === "dots" && p.arrangement !== "loop" && p.radius === undefined && p.size !== undefined) {
     c.radius = (p.size as number) / 2
   }
 

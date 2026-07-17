@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react"
 import type { CSSProperties } from "react"
-import { PulseBars, PulseDots, PulseGrid, PulseRing, palettes, recipes } from "react-pulsor"
+import { PulseBars, PulseDots, PulseGrid, palettes, recipes } from "react-pulsor"
 import type { GradientStop, Recipe, RecipeName } from "react-pulsor"
 import type { ElementKind } from "./defaults"
 import { RECIPE_BLURBS, type Lang, type Strings } from "./i18n"
@@ -22,8 +22,6 @@ export function RecipeView({
       return <PulseBars {...recipe.props} period={period} />
     case "dots":
       return <PulseDots {...recipe.props} period={period} />
-    case "ring":
-      return <PulseRing {...recipe.props} period={period} />
   }
 }
 
@@ -47,7 +45,7 @@ export const RECIPE_SCALE: Partial<Record<RecipeName, number>> = {
   ticker: 0.9,
 }
 
-const FILTERS = ["all", "grid", "bars", "dots", "ring"] as const
+const FILTERS = ["all", "grid", "bars", "dots"] as const
 type Filter = (typeof FILTERS)[number]
 
 export function Gallery({

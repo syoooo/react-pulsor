@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0
+
+**Breaking:** `PulseRing` merges into `PulseDots` as `arrangement="loop"` —
+every 1-D component now reads the same way: `line` or `loop`. Migrate
+`<PulseRing …/>` to `<PulseDots arrangement="loop" …/>` (props unchanged);
+`cssSnippet` / `svgSnippet` take `"dots"` instead of `"ring"`.
+
 ## 0.1.0
 
 First release.

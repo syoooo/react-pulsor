@@ -261,26 +261,32 @@ const COMPONENT_PROPS: Record<ElementKind, PropRow[]> = {
   ],
   dots: [
     { name: "pattern", type: SEQ_PATTERN, def: '"wave"', desc: { en: "How the wave travels the dots", zh: "波的行进方式", ja: "波の進み方" } },
-    { name: "count", type: "number", def: "3", desc: { en: "Number of dots", zh: "圆点数量", ja: "ドットの数" } },
-    { name: "size", type: "number (px)", def: "7", desc: { en: "Dot diameter", zh: "圆点直径", ja: "ドット径" } },
-    { name: "gap", type: "number (px)", def: "4", desc: { en: "Gap between dots", zh: "点与点的间距", ja: "ドットの間隔" } },
-    { name: "radius", type: "number (px)", def: "size / 2", desc: { en: "Corner radius — size/2 is a circle", zh: "圆角，size/2即正圆", ja: "角丸、size/2で正円" } },
-  ],
-  ring: [
-    { name: "pattern", type: SEQ_PATTERN, def: '"wave"', desc: { en: "How the wave travels the ring", zh: "波绕环行进的顺序", ja: "波が一周する順番" } },
-    { name: "count", type: "number", def: "8", desc: { en: "Number of elements", zh: "元素数量", ja: "エレメントの数" } },
-    { name: "ringSize", type: "number (px)", def: "28", desc: { en: "Ring height through element centers", zh: "过元素中心的环高", ja: "エレメント中心を通るリングの高さ" } },
-    { name: "aspect", type: "number", def: "1", desc: { en: "Ring width ÷ height", zh: "环的宽高比", ja: "リングの幅 ÷ 高さ" } },
-    { name: "squareness", type: "number", def: "2", desc: { en: "2 ellipse, 4 squircle, 1 diamond", zh: "2椭圆、4方圆、1菱形", ja: "2で楕円、4でスクワークル、1でひし形" } },
+    {
+      name: "arrangement",
+      type: '"line" | "loop"',
+      def: '"line"',
+      desc: {
+        en: "A row of dots, or elements riding a closed loop",
+        zh: "一排圆点，或沿闭环分布的元素",
+        ja: "一列のドットか、閉じたループ上のエレメントか",
+      },
+    },
+    { name: "count", type: "number", def: "3 / 8 (loop)", desc: { en: "Number of elements", zh: "元素数量", ja: "エレメントの数" } },
+    { name: "size", type: "number (px)", def: "7", desc: { en: "Dot diameter (line only)", zh: "圆点直径（仅 line）", ja: "ドット径（line のみ）" } },
+    { name: "gap", type: "number (px)", def: "4", desc: { en: "Line only", zh: "仅 line", ja: "line のみ" } },
+    { name: "ringSize", type: "number (px)", def: "28", desc: { en: "Loop height through element centers (loop only)", zh: "过元素中心的环高（仅 loop）", ja: "エレメント中心を通るループの高さ（loop のみ）" } },
+    { name: "aspect", type: "number", def: "1", desc: { en: "Loop width ÷ height", zh: "环的宽高比", ja: "ループの幅 ÷ 高さ" } },
+    { name: "squareness", type: "number", def: "2", desc: { en: "2 ellipse, 4 squircle, 1 diamond", zh: "2 椭圆、4 方圆、1 菱形", ja: "2 で楕円、4 でスクワークル、1 でひし形" } },
     {
       name: "align",
       type: '"tangent" | "radial"',
       def: '"tangent"',
-      desc: { en: "tangent traces the outline; radial points at the center", zh: "tangent沿轮廓排布，radial指向圆心", ja: "tangentは輪郭に沿う、radialは中心を向く" },
+      desc: { en: "tangent traces the outline; radial points at the center", zh: "tangent 沿轮廓排布，radial 指向圆心", ja: "tangent は輪郭に沿う、radial は中心を向く" },
     },
-    { name: "length / thickness", type: "number (px)", def: "6 / 6", desc: { en: "Equal = dots; elongated = ticks", zh: "相等是圆点，拉长是刻度", ja: "同値でドット、長くすると目盛り状" } },
-    { name: "radius", type: "number (px)", def: "min(l, t) / 2", desc: { en: "Corner radius", zh: "圆角", ja: "角丸" } },
+    { name: "length / thickness", type: "number (px)", def: "6 / 6", desc: { en: "Loop element box: equal = dots, elongated = ticks", zh: "loop 元素尺寸：相等是圆点，拉长是刻度", ja: "loop エレメントの寸法。同値でドット、長くすると目盛り状" } },
+    { name: "radius", type: "number (px)", def: "half the element", desc: { en: "Corner radius", zh: "圆角", ja: "角丸" } },
   ],
+
 }
 
 function PropsTable({ rows, lang, t }: { rows: PropRow[]; lang: Lang; t: Strings }) {

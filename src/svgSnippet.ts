@@ -1,18 +1,12 @@
 import { barsColors, barsSegments, barsTransformOrigin, resolveBarsProps } from "./components/PulseBars"
-import { dotsColors, resolveDotsProps } from "./components/PulseDots"
+import { dotsColors, dotsPoints, resolveDotsProps } from "./components/PulseDots"
 import { gridColors, resolveGridProps } from "./components/PulseGrid"
-import { resolveRingProps, ringColors, ringPoints } from "./components/PulseRing"
 import { levelAt, resolveEnvelope } from "./core/engine"
 import { motionDefaults, resolveMotionInputs } from "./core/internal"
 import type { ResolvedCore } from "./core/internal"
 import { gridPhases, linearPhases } from "./core/patterns"
 import type { SnippetElement, SnippetProps } from "./cssSnippet"
-import type {
-  PulseBarsProps,
-  PulseDotsProps,
-  PulseGridProps,
-  PulseRingProps,
-} from "./types"
+import type { PulseBarsProps, PulseDotsProps, PulseGridProps } from "./types"
 
 /**
  * A static vector snapshot of the loader — one frame of the loop, exact
@@ -176,49 +170,47 @@ export function svgSnippet(
         }),
       )
     }
-  } else if (element === "ring") {
-    const c = resolveRingProps(props as PulseRingProps)
-    core = c
-    fallbackAmp = c.length * 0.9
-    stretchAxis = "x"
-    const phases = linearPhases(c.pattern, c.count, c.waves, c.seed)
-    const points = ringPoints(c)
-    const colors = ringColors(c, phases, points)
-    const pad = Math.max(c.length, c.thickness)
-    boxW = c.ringSize * c.aspect + pad * 2
-    boxH = c.ringSize + pad * 2
-    points.forEach((p, i) =>
-      items.push({
-        x: boxW / 2 + p.x - c.length / 2,
-        y: boxH / 2 + p.y - c.thickness / 2,
-        w: c.length,
-        h: c.thickness,
-        rx: c.radius,
-        fill: colors[i],
-        phase: phases[i],
-        baseRotate: ((c.align === "tangent" ? p.tangent : p.radial) * 180) / Math.PI,
-      }),
-    )
   } else {
     const c = resolveDotsProps(props as PulseDotsProps)
     core = c
-    fallbackAmp = c.size * 0.9
     const phases = linearPhases(c.pattern, c.count, c.waves, c.seed)
-    const colors = dotsColors(c, phases)
-    const pitch = c.size + c.gap
-    boxW = c.count * pitch - c.gap
-    boxH = c.size
-    phases.forEach((phase, i) =>
-      items.push({
-        x: i * pitch,
-        y: 0,
-        w: c.size,
-        h: c.size,
-        rx: c.radius,
-        fill: colors[i],
-        phase,
-      }),
-    )
+    const points = dotsPoints(c)
+    const colors = dotsColors(c, phases, points)
+    if (c.loop) {
+      fallbackAmp = c.length * 0.9
+      stretchAxis = "x"
+      const pad = Math.max(c.length, c.thickness)
+      boxW = c.ringSize * c.aspect + pad * 2
+      boxH = c.ringSize + pad * 2
+      points.forEach((p, i) =>
+        items.push({
+          x: boxW / 2 + p.x - c.length / 2,
+          y: boxH / 2 + p.y - c.thickness / 2,
+          w: c.length,
+          h: c.thickness,
+          rx: c.radius,
+          fill: colors[i],
+          phase: phases[i],
+          baseRotate: ((c.align === "tangent" ? p.tangent : p.radial) * 180) / Math.PI,
+        }),
+      )
+    } else {
+      fallbackAmp = c.size * 0.9
+      const pitch = c.size + c.gap
+      boxW = c.count * pitch - c.gap
+      boxH = c.size
+      phases.forEach((phase, i) =>
+        items.push({
+          x: i * pitch,
+          y: 0,
+          w: c.size,
+          h: c.size,
+          rx: c.radius,
+          fill: colors[i],
+          phase,
+        }),
+      )
+    }
   }
 
   const rest = motionDefaults(

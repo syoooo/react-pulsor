@@ -1,7 +1,6 @@
 export { PulseGrid } from "./components/PulseGrid"
 export { PulseBars } from "./components/PulseBars"
 export { PulseDots } from "./components/PulseDots"
-export { PulseRing } from "./components/PulseRing"
 
 export { palettes, sampleGradient } from "./core/color"
 export type { PaletteName } from "./core/color"
@@ -28,6 +27,7 @@ export type {
   BarsPattern,
   ColorBy,
   CoreProps,
+  DotsArrangement,
   DotsPattern,
   Easing,
   EasingPreset,
@@ -43,7 +43,6 @@ export type {
   PulseBarsProps,
   PulseDotsProps,
   PulseGridProps,
-  PulseRingProps,
   RingAlign,
   RingPattern,
   SequencePattern,

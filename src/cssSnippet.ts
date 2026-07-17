@@ -1,17 +1,11 @@
 import { barsColors, barsSegments, barsTransformOrigin, resolveBarsProps } from "./components/PulseBars"
-import { dotsColors, resolveDotsProps } from "./components/PulseDots"
+import { dotsColors, dotsPoints, resolveDotsProps } from "./components/PulseDots"
 import { gridColors, resolveGridProps } from "./components/PulseGrid"
-import { resolveRingProps, ringColors, ringPoints } from "./components/PulseRing"
 import { compileAnimation, resolveEasingPair, resolveEnvelope } from "./core/engine"
 import { motionDefaults, resolveMotionInputs } from "./core/internal"
 import type { ResolvedCore } from "./core/internal"
 import { gridPhases, linearPhases } from "./core/patterns"
-import type {
-  PulseBarsProps,
-  PulseDotsProps,
-  PulseGridProps,
-  PulseRingProps,
-} from "./types"
+import type { PulseBarsProps, PulseDotsProps, PulseGridProps } from "./types"
 
 /**
  * Export a loader as a framework-free HTML + CSS snippet. The engine is
@@ -20,8 +14,8 @@ import type {
  * loop; states, progress and intensity are runtime concerns.
  */
 
-export type SnippetElement = "grid" | "bars" | "dots" | "ring"
-export type SnippetProps = PulseGridProps | PulseBarsProps | PulseDotsProps | PulseRingProps
+export type SnippetElement = "grid" | "bars" | "dots"
+export type SnippetProps = PulseGridProps | PulseBarsProps | PulseDotsProps
 
 const r2 = (v: number) => Math.round(v * 100) / 100
 
@@ -107,11 +101,11 @@ export function cssSnippet(element: SnippetElement, props: SnippetProps): string
     return assemble(css, layout, cells, c.label)
   }
 
-  if (element === "ring") {
-    const c = resolveRingProps(props as PulseRingProps)
-    const phases = linearPhases(c.pattern, c.count, c.waves, c.seed)
-    const points = ringPoints(c)
-    const colors = ringColors(c, phases, points)
+  const c = resolveDotsProps(props as PulseDotsProps)
+  const phases = linearPhases(c.pattern, c.count, c.waves, c.seed)
+  const points = dotsPoints(c)
+  const colors = dotsColors(c, phases, points)
+  if (c.loop) {
     const { css, cellCls, animDecl, delay } = compile(c, c.length * 0.9, "x")
     const pad = Math.max(c.length, c.thickness)
     const boxW = r2(c.ringSize * c.aspect + pad * 2)
@@ -127,10 +121,6 @@ export function cssSnippet(element: SnippetElement, props: SnippetProps): string
     })
     return assemble(css, layout, cells, c.label)
   }
-
-  const c = resolveDotsProps(props as PulseDotsProps)
-  const phases = linearPhases(c.pattern, c.count, c.waves, c.seed)
-  const colors = dotsColors(c, phases)
   const { css, cellCls, animDecl, delay } = compile(c, c.size * 0.9, "y")
   const layout = [
     `.pulsor{display:inline-flex;align-items:center;gap:${c.gap}px;line-height:0}`,

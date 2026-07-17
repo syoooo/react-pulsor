@@ -1,4 +1,4 @@
-import type { PulseBarsProps, PulseDotsProps, PulseGridProps, PulseRingProps } from "./types"
+import type { PulseBarsProps, PulseDotsProps, PulseGridProps } from "./types"
 
 /**
  * Curated, ready-to-use configurations. Each recipe is just props — spread
@@ -12,7 +12,6 @@ export type Recipe =
   | { element: "grid"; title: string; blurb: string; props: PulseGridProps }
   | { element: "bars"; title: string; blurb: string; props: PulseBarsProps }
   | { element: "dots"; title: string; blurb: string; props: PulseDotsProps }
-  | { element: "ring"; title: string; blurb: string; props: PulseRingProps }
 
 export const recipes = {
   sonar: {
@@ -49,10 +48,11 @@ export const recipes = {
     },
   },
   comet: {
-    element: "ring",
+    element: "dots",
     title: "Comet",
     blurb: "One bright head and a long gradient tail — phase coloring does the trailing.",
     props: {
+      arrangement: "loop",
       count: 14,
       length: 5,
       thickness: 5,
@@ -118,10 +118,11 @@ export const recipes = {
     },
   },
   glyph: {
-    element: "ring",
+    element: "dots",
     title: "Glyph",
     blurb: "An O drawn in dashes. Tune aspect and squareness until it matches your wordmark.",
     props: {
+      arrangement: "loop",
       count: 12,
       length: 7,
       thickness: 3,
@@ -189,10 +190,11 @@ export const recipes = {
     },
   },
   stadium: {
-    element: "ring",
+    element: "dots",
     title: "Stadium",
     blurb: "A squircle track — the wave does laps around rounded corners.",
     props: {
+      arrangement: "loop",
       count: 12,
       squareness: 4,
       aspect: 1.15,
@@ -228,10 +230,11 @@ export const recipes = {
     },
   },
   sunburst: {
-    element: "ring",
+    element: "dots",
     title: "Sunburst",
     blurb: "Radial ticks flaring around a ring — a clock face running hot.",
     props: {
+      arrangement: "loop",
       align: "radial",
       count: 10,
       length: 8,
@@ -351,10 +354,11 @@ export const recipes = {
     },
   },
   orbit: {
-    element: "ring",
+    element: "dots",
     title: "Orbit",
     blurb: "A ring of dots the wave keeps lapping — spinner DNA, gradient body.",
     props: {
+      arrangement: "loop",
       count: 8,
       length: 6,
       thickness: 6,
@@ -365,10 +369,11 @@ export const recipes = {
     },
   },
   beacon: {
-    element: "ring",
+    element: "dots",
     title: "Beacon",
     blurb: "Twelve small lights flashing fast around a tight ring — familiar shape, live color.",
     props: {
+      arrangement: "loop",
       count: 12,
       length: 3.5,
       thickness: 3.5,

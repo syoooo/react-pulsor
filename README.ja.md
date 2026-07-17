@@ -8,7 +8,7 @@
 
 世の中のローダーの多くは、作り付けのアニメーションにサイズのつまみが付いただけ。Pulsor には、互いに独立した 4 つのダイヤルがあります。組み合わせを変えれば、そのたびに別のローダーになる。
 
-- **ジオメトリ** — セルのグリッド（`PulseGrid`）、直線またはストライプループのバー（`PulseBars`）、一列のドット（`PulseDots`）、スーパー楕円上のエレメント（`PulseRing`）。
+- **ジオメトリ** — セルのグリッド（`PulseGrid`）、直線またはストライプループのバー（`PulseBars`）、一列またはスーパー楕円ループ上のドット（`PulseDots`）。
 - **パターン（位相場）** — 波が図形をどう渡るか。スイープ、対角線、波紋、螺旋、シェブロン、蛇行、シード乱数、あるいは全同期。
 - **エンベロープ** — 一拍の強度カーブ。ADSR 式の `attack` / `hold` / `release`、プリセットは柔らかな `breathe` からストロボの `flash`、二拍の `heartbeat` まで。
 - **カラー** — OKLab 空間でサンプリングする多段グラデーション（sRGB 補間は灰色に濁りますが、OKLab は濁りません）。空間位置で塗るか、アニメーションの位相に追従させるかを選べます。
@@ -28,7 +28,7 @@ npm i react-pulsor
 ## 使い方
 
 ```tsx
-import { PulseGrid, PulseBars, PulseDots, PulseRing } from "react-pulsor"
+import { PulseGrid, PulseBars, PulseDots } from "react-pulsor"
 
 // 4×4 の波紋、aurora パレット——デフォルトのグリッド。
 <PulseGrid />
@@ -42,8 +42,8 @@ import { PulseGrid, PulseBars, PulseDots, PulseRing } from "react-pulsor"
 // 定番のタイピングインジケーター、バネの効いたホップ付き。
 <PulseDots animate="bounce" easing="spring" period={800} />
 
-// スーパー楕円を巡る破線リングのスピナー。
-<PulseRing count={12} length={7} thickness={3} aspect={0.88} squareness={2.6} />
+// スーパー楕円ループを巡る破線のスピナー。
+<PulseDots arrangement="loop" count={12} length={7} thickness={3} aspect={0.88} squareness={2.6} />
 
 // カスタムのグラデーションストップ（OKLab でサンプリング）。
 <PulseGrid
@@ -146,30 +146,21 @@ rows × cols のセル行列をパターンが掃いていきます。
 
 ## `<PulseDots />`
 
-一列のドット——タイピングインジケーターとその親戚たち。
+一列のドット（タイピングインジケーターとその親戚たち）。`arrangement="loop"` にすると、エレメントがスーパー楕円上に弧長で均等に並びます——`length === thickness` ならドット、伸ばせば目盛りに。`align="tangent"` は輪郭をなぞる破線の輪、`align="radial"` はすべて中心を向く時計式です。
 
 | Prop | 型 | デフォルト |
 | --- | --- | --- |
 | `pattern` | bars と同じ | `"wave"` |
-| `count` | `number` | `3` |
-| `size` | `number` px — ドット径 | `7` |
-| `gap` | `number` px | `4` |
-| `radius` | `number` px | `size / 2` |
-
-## `<PulseRing />`
-
-スーパー楕円上に（弧長で均等に）並ぶエレメント。`length === thickness` ならドット、伸ばせば目盛りに。`align="tangent"` は輪郭をなぞる破線の輪、`align="radial"` はすべて中心を向く時計式です。
-
-| Prop | 型 | デフォルト |
-| --- | --- | --- |
-| `pattern` | bars と同じ | `"wave"` |
-| `count` | `number` | `8` |
-| `ringSize` | `number` px — リングの高さ | `28` |
+| `arrangement` | `"line" \| "loop"` | `"line"` |
+| `count` | `number` | line `3`、loop `8` |
+| `size` | `number` px — ドット径（line のみ） | `7` |
+| `gap` | `number` px（line のみ） | `4` |
+| `ringSize` | `number` px — ループの高さ（loop のみ） | `28` |
 | `aspect` | `number` — 幅 ÷ 高さ | `1` |
 | `squareness` | `number` — `2` 楕円、`4` スクワークル、`1` ひし形 | `2` |
-| `align` | `"tangent" \| "radial"` | `"tangent"` |
-| `length` / `thickness` | `number` px | `6` / `6` |
-| `radius` | `number` px | `min(length, thickness) / 2` |
+| `align` | `"tangent" \| "radial"`（loop のみ） | `"tangent"` |
+| `length` / `thickness` | `number` px — loop エレメントの寸法 | `6` / `6` |
+| `radius` | `number` px | エレメントの半分 |
 
 ## パターンの仕組み
 
