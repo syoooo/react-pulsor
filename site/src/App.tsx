@@ -274,7 +274,9 @@ export default function App() {
               onClick={async () => {
                 setGifBusy(true)
                 try {
-                  await exportGif(element, props as SnippetProps)
+                  await exportGif(element, props as SnippetProps, {
+                    background: bg === "light" ? "#faf9f4" : "#0f0f09",
+                  })
                   showToast(t.gifDone)
                 } finally {
                   setGifBusy(false)

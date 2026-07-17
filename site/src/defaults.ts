@@ -364,25 +364,8 @@ export function decodeShare(hash: string): { element: ElementKind; config: Confi
       e: ElementKind
       c: Partial<Config>
     }
-    // legacy share links from when loop dots were their own "ring" element:
-    // their diffs were taken against the old ring defaults, so rebuild that
-    // base before applying the stored diff
-    const legacy = (payload.e as string) === "ring"
-    const el = legacy ? "dots" : payload.e
-    if (!(el in COMPONENT_NAMES)) return null
-    const base = defaultConfig(el)
-    if (legacy) {
-      Object.assign(base, {
-        dotsArrangement: "loop",
-        count: 8,
-        thickness: 6,
-        length: 6,
-        radius: 3,
-        animate: "fade",
-        ...modeDefaults("fade", 6 * 0.9),
-      })
-    }
-    return { element: el, config: { ...base, ...payload.c } }
+    if (!(payload.e in COMPONENT_NAMES)) return null
+    return { element: payload.e, config: { ...defaultConfig(payload.e), ...payload.c } }
   } catch {
     return null
   }

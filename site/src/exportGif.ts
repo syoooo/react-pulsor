@@ -3,26 +3,19 @@ import { svgSnippet } from "react-pulsor"
 import type { SnippetElement, SnippetProps } from "react-pulsor"
 
 /**
- * Render one loop of the loader to an animated GIF with a transparent
- * background. GIF alpha is 1-bit, so partial opacity (fades, dims) is
- * carried by ordered dithering — pixel coverage matches the original
- * opacity on any background, and the texture suits the pixel identity.
+ * Render one loop of the loader to an animated GIF over a solid stage
+ * color. GIF alpha is 1-bit, so the loader's partial-opacity fades cannot
+ * survive a transparent background — for a true-alpha asset, copy the SVG
+ * instead.
  */
-
-const BAYER = [
-  [0, 8, 2, 10],
-  [12, 4, 14, 6],
-  [3, 11, 1, 9],
-  [15, 7, 13, 5],
-]
-
 export async function exportGif(
   element: SnippetElement,
   props: SnippetProps,
-  opts: { fps?: number; scale?: number } = {},
+  opts: { fps?: number; scale?: number; background?: string } = {},
 ): Promise<void> {
   const fps = opts.fps ?? 30
   const scale = opts.scale ?? 2
+  const background = opts.background ?? "#0f0f09"
   const period = (props as { period?: number }).period ?? 900
   const frames = Math.min(90, Math.max(8, Math.round((period / 1000) * fps)))
   const delay = Math.round(period / frames)
@@ -48,25 +41,16 @@ export async function exportGif(
       const img = new Image()
       img.src = url
       await img.decode()
-      ctx.clearRect(0, 0, w, h)
+      ctx.fillStyle = background
+      ctx.fillRect(0, 0, w, h)
       ctx.drawImage(img, 0, 0, w, h)
     } finally {
       URL.revokeObjectURL(url)
     }
     const { data } = ctx.getImageData(0, 0, w, h)
-    // Alpha → dithered 1-bit coverage.
-    for (let y = 0; y < h; y++) {
-      for (let x = 0; x < w; x++) {
-        const i = (y * w + x) * 4 + 3
-        const threshold = ((BAYER[y & 3][x & 3] + 0.5) / 16) * 255
-        data[i] = data[i] > threshold ? 255 : 0
-      }
-    }
-    const palette = quantize(data, 256, { format: "rgba4444" })
-    const index = applyPalette(data, palette, "rgba4444")
-    // dispose:2 clears to transparent between frames — without it, opaque
-    // pixels accumulate across the loop and the wave freezes all-bright
-    gif.writeFrame(index, w, h, { palette, delay, transparent: true, dispose: 2 })
+    const palette = quantize(data, 256)
+    const index = applyPalette(data, palette)
+    gif.writeFrame(index, w, h, { palette, delay })
   }
 
   gif.finish()

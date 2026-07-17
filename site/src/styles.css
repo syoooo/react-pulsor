@@ -668,6 +668,7 @@ html:lang(ja) .card-blurb {
 
 .ctl-row .segmented {
   grid-column: 2 / 4;
+  justify-self: start;
 }
 
 /* fine-tune (collapsed advanced controls) */
