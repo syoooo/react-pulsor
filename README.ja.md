@@ -2,6 +2,8 @@
 
 [English](https://github.com/syoooo/react-pulsor/blob/main/README.md) · [简体中文](https://github.com/syoooo/react-pulsor/blob/main/README.zh-CN.md) · **日本語**
 
+**デモ → [react-pulsor.vercel.app](https://react-pulsor.vercel.app)**
+
 自在に組み替えられる React のローディングインジケーター。グリッド、バー、ドット、リングを、**位相場**と**モーションエンベロープ**、**OKLab グラデーション**で動かす。走るのはコンポジタだけの keyframe 一本。依存はゼロ、CSS の import も要らない。
 
 世の中のローダーの多くは、作り付けのアニメーションにサイズのつまみが付いただけ。Pulsor には、互いに独立した 4 つのダイヤルがあります。組み合わせを変えれば、そのたびに別のローダーになる。

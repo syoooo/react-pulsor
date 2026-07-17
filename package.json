@@ -59,7 +59,7 @@
     "type": "git",
     "url": "git+https://github.com/syoooo/react-pulsor.git"
   },
-  "homepage": "https://github.com/syoooo/react-pulsor#readme",
+  "homepage": "https://react-pulsor.vercel.app",
   "bugs": {
     "url": "https://github.com/syoooo/react-pulsor/issues"
   }

@@ -2,6 +2,8 @@
 
 **English** · [简体中文](https://github.com/syoooo/react-pulsor/blob/main/README.zh-CN.md) · [日本語](https://github.com/syoooo/react-pulsor/blob/main/README.ja.md)
 
+**Live demo → [react-pulsor.vercel.app](https://react-pulsor.vercel.app)**
+
 Composable React loading indicators. Grids, bars, dots and rings driven by
 **phase fields**, **motion envelopes** and **OKLab gradients** — one
 compositor-only keyframe, zero dependencies, no CSS import.

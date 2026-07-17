@@ -2,6 +2,8 @@
 
 [English](https://github.com/syoooo/react-pulsor/blob/main/README.md) · **简体中文** · [日本語](https://github.com/syoooo/react-pulsor/blob/main/README.ja.md)
 
+**在线 Demo → [react-pulsor.vercel.app](https://react-pulsor.vercel.app)**
+
 可自由组合的 React 加载指示器。网格、长条、圆点与圆环，由**相位场**、**运动包络**和 **OKLab 渐变**驱动——动画只有一条走合成器的 keyframe，零依赖，无需引入任何 CSS。
 
 市面上的 loader 大多是一段写死的动画加一个尺寸参数。Pulsor 给你四个相互独立的旋钮，任意组合都是一个不一样的 loader：
