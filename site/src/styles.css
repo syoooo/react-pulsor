@@ -1355,3 +1355,14 @@ button.label-btn:hover {
     gap: 14px;
   }
 }
+
+@media (max-width: 600px) {
+  /* section anchors are scroll shortcuts — the content is one flick away */
+  .nav-links a[href^="#"] {
+    display: none;
+  }
+
+  .nav-links {
+    gap: 12px;
+  }
+}
