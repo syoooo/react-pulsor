@@ -355,17 +355,23 @@ html:lang(ja) .card-blurb {
 }
 
 .specimen-stage {
+  --bkt: var(--border);
+  --arm: 10px;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 76px;
   background: var(--screen);
-  border: 1px solid var(--border);
   background-image: repeating-linear-gradient(
     0deg,
     transparent 0 2px,
     rgba(255, 255, 255, 0.025) 2px 3px
   );
+}
+
+.specimen:hover .specimen-stage {
+  --bkt: var(--accent);
 }
 
 .specimen-name {
@@ -416,17 +422,43 @@ html:lang(ja) .card-blurb {
   scroll-margin-top: 76px;
 }
 
-/* fixed height, pinned to the top of its column — no jumping while tuning */
+/* fixed height, pinned to the top of its column — no jumping while tuning.
+   Framed by viewfinder corner brackets instead of a solid border: the one
+   live screen reads as an instrument, archival panels keep their boxes. */
 .preview {
   position: sticky;
   top: 64px;
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--ink);
   overflow: hidden;
   height: 360px;
   transition: background 0.25s;
-  --tick: rgba(232, 235, 224, 0.3);
+}
+
+/* aperture brackets: every surface a loader plays on is marked by
+   viewfinder corners, never a printed box — --bkt sets color, --arm size */
+.aperture::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--bkt) 0 0) top left / var(--arm) 1px,
+    linear-gradient(var(--bkt) 0 0) top left / 1px var(--arm),
+    linear-gradient(var(--bkt) 0 0) top right / var(--arm) 1px,
+    linear-gradient(var(--bkt) 0 0) top right / 1px var(--arm),
+    linear-gradient(var(--bkt) 0 0) bottom left / var(--arm) 1px,
+    linear-gradient(var(--bkt) 0 0) bottom left / 1px var(--arm),
+    linear-gradient(var(--bkt) 0 0) bottom right / var(--arm) 1px,
+    linear-gradient(var(--bkt) 0 0) bottom right / 1px var(--arm);
+  background-repeat: no-repeat;
+  transition: background 0.15s;
+}
+
+.preview {
+  --bkt: var(--ink);
+  --arm: 18px;
 }
 
 .preview.dark {
@@ -439,7 +471,6 @@ html:lang(ja) .card-blurb {
 }
 
 .preview.light {
-  --tick: rgba(29, 27, 22, 0.3);
   --panel: #ffffff;
   --panel-2: #ffffff;
   --border: #c6c1b0;
@@ -468,6 +499,34 @@ html:lang(ja) .card-blurb {
   right: 12px;
 }
 
+.hud-br {
+  top: auto;
+  bottom: 12px;
+  right: 12px;
+  display: flex;
+  gap: 6px;
+}
+
+.hud-bl {
+  top: auto;
+  bottom: 12px;
+  left: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.hud-br .label-btn {
+  height: 22px;
+  padding: 0 8px;
+  gap: 5px;
+  font-size: 11px;
+}
+
+.hud-br .label-btn:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
 .stage {
   flex: 1;
   display: flex;
@@ -476,33 +535,10 @@ html:lang(ja) .card-blurb {
   padding: 52px 40px 40px;
 }
 
-/* oscilloscope-style corner graticule */
-.stage::before {
-  content: "";
-  position: absolute;
-  inset: 12px;
-  pointer-events: none;
-  opacity: 0.6;
-  background:
-    linear-gradient(var(--tick) 0 0) top left / 12px 1px,
-    linear-gradient(var(--tick) 0 0) top left / 1px 12px,
-    linear-gradient(var(--tick) 0 0) top right / 12px 1px,
-    linear-gradient(var(--tick) 0 0) top right / 1px 12px,
-    linear-gradient(var(--tick) 0 0) bottom left / 12px 1px,
-    linear-gradient(var(--tick) 0 0) bottom left / 1px 12px,
-    linear-gradient(var(--tick) 0 0) bottom right / 12px 1px,
-    linear-gradient(var(--tick) 0 0) bottom right / 1px 12px;
-  background-repeat: no-repeat;
-}
-
 .preview-name {
-  text-align: center;
-  padding: 0 0 14px;
-}
-
-.preview-name code {
   font-family: var(--mono);
   font-size: 12px;
+  line-height: 22px;
   color: var(--faint);
 }
 
@@ -573,15 +609,6 @@ html:lang(ja) .card-blurb {
   color: var(--text);
   border-bottom-color: var(--accent);
   border-bottom-style: solid;
-}
-
-.ctl-hint {
-  margin: 4px 0 0;
-  font-size: 12px;
-  line-height: 1.55;
-  color: var(--faint);
-  border-left: 2px solid var(--accent);
-  padding-left: 10px;
 }
 
 /* caption under the feel presets: what the macro governs */
@@ -938,59 +965,6 @@ button.label-btn:hover {
   border-color: var(--ink);
 }
 
-/* overflow menu */
-.more {
-  position: relative;
-}
-
-.more summary {
-  list-style: none;
-}
-
-.more summary::-webkit-details-marker {
-  display: none;
-}
-
-.more[open] > summary.icon-btn {
-  color: var(--on-ink);
-  background: var(--ink);
-  border-color: var(--ink);
-}
-
-.menu {
-  position: absolute;
-  right: 0;
-  top: calc(100% + 6px);
-  z-index: 5;
-  min-width: 168px;
-  background: var(--panel);
-  border: 1px solid var(--ink);
-  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
-  display: flex;
-  flex-direction: column;
-}
-
-.menu button {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  font-family: var(--mono);
-  font-size: 12px;
-  color: var(--muted);
-  padding: 8px 12px;
-  text-align: left;
-  transition: color 0.12s, background 0.12s;
-}
-
-.menu button:hover:not(:disabled) {
-  color: var(--on-ink);
-  background: var(--ink);
-}
-
-.menu button:disabled {
-  opacity: 0.5;
-  cursor: wait;
-}
 
 .codeblock pre {
   margin: 0;
@@ -1126,7 +1100,7 @@ button.label-btn:hover {
   cursor: pointer;
 }
 
-.card-stage::before {
+.card-stage::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -1139,7 +1113,7 @@ button.label-btn:hover {
   transition: opacity 0.25s;
 }
 
-.card:hover .card-stage::before {
+.card:hover .card-stage::after {
   opacity: 1;
 }
 

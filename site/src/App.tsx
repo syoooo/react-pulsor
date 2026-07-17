@@ -32,7 +32,7 @@ import {
 import { exportGif } from "./exportGif"
 import { Gallery, RECIPE_SCALE, RecipeView } from "./Gallery"
 import { useI18n, type Lang } from "./i18n"
-import { Check, Code, Copy, Css, Dots, GifIcon, Link, Vector } from "./icons"
+import { Check, Code, Copy, Css, GifIcon, Link, Vector } from "./icons"
 import { PropsSection } from "./PropsRef"
 import { highlightJsx, SegRow, Segmented, Section, Select, Slider, Swatches } from "./ui"
 
@@ -104,18 +104,8 @@ export default function App() {
   const [feelFlash, setFeelFlash] = useState(0)
   const [copied, setCopied] = useState<"code" | "install" | "css" | "link" | "svg" | null>(null)
   const [gifBusy, setGifBusy] = useState(false)
-  const menuRef = useRef<HTMLDetailsElement>(null)
 
   const config = configs[element]
-
-  useEffect(() => {
-    const close = (e: MouseEvent) => {
-      const el = menuRef.current
-      if (el?.open && !el.contains(e.target as Node)) el.removeAttribute("open")
-    }
-    document.addEventListener("click", close)
-    return () => document.removeEventListener("click", close)
-  }, [])
 
   useEffect(() => {
     const encoded = encodeShare(element, config)
@@ -158,7 +148,6 @@ export default function App() {
 
   const patterns = element === "grid" ? GRID_PATTERNS : LINEAR_PATTERNS
   const usesRestScale = ["scale", "fade-scale", "stretch"].includes(config.animate)
-  const barsGlyph = element === "bars" && config.barsArrangement === "loop"
 
   const setStop = (i: number, color: string) => {
     const customStops = config.customStops.slice()
@@ -239,7 +228,7 @@ export default function App() {
         <div className="specimens">
           {SPECIMENS.map((name) => (
             <button className="specimen" key={name} onClick={() => applyRecipe(name)}>
-              <span className="specimen-stage">
+              <span className="specimen-stage aperture">
                 <span style={RECIPE_SCALE[name] ? { transform: `scale(${RECIPE_SCALE[name]})` } : undefined}>
                   <RecipeView recipe={recipes[name] as Recipe} />
                 </span>
@@ -253,7 +242,7 @@ export default function App() {
       <Eyebrow title="Playground" />
 
       <section className="playground" id="playground">
-        <div className={`preview ${bg}`}>
+        <div className={`preview aperture ${bg}`}>
           <div className="stage">
             <div style={zoom > 1 ? { transform: `scale(${zoom})` } : undefined}>
               <LoaderView element={element} props={props} />
@@ -269,8 +258,43 @@ export default function App() {
               onChange={(v) => setZoom(Number(v[0]))}
             />
           </div>
-          <div className="preview-name">
-            <code>{`<${COMPONENT_NAMES[element]} />`}</code>
+          <div className="hud hud-bl">
+            <code className="preview-name">{`<${COMPONENT_NAMES[element]} />`}</code>
+          </div>
+          <div className="hud hud-br">
+            <button
+              className="label-btn"
+              title={t.copySvg}
+              onClick={() => copy(svgSnippet(element, props as SnippetProps), "svg")}
+            >
+              {copied === "svg" ? <Check size={13} /> : <Vector size={13} />}
+              svg
+            </button>
+            <button
+              className="label-btn"
+              title={t.exportGif}
+              disabled={gifBusy}
+              onClick={async () => {
+                setGifBusy(true)
+                try {
+                  await exportGif(element, props as SnippetProps)
+                  showToast(t.gifDone)
+                } finally {
+                  setGifBusy(false)
+                }
+              }}
+            >
+              <GifIcon size={13} />
+              {gifBusy ? "…" : "gif"}
+            </button>
+            <button
+              className="label-btn"
+              title={t.copyLink}
+              onClick={() => copy(window.location.href, "link")}
+            >
+              {copied === "link" ? <Check size={13} /> : <Link size={13} />}
+              link
+            </button>
           </div>
         </div>
 
@@ -351,7 +375,6 @@ export default function App() {
                   </>
                 )}
                 <Slider label="radius" value={config.radius} min={0} max={8} step={0.5} onChange={(v) => set({ radius: v })} format={px} />
-                {barsGlyph && <p className="ctl-hint">{t.loopHint}</p>}
               </>
             )}
             {element === "dots" && (
@@ -537,48 +560,17 @@ export default function App() {
             <i />
           </span>
           <span className="code-actions">
-            <button
-              className="label-btn"
-              onClick={() => copy(svgSnippet(element, props as SnippetProps), "svg")}
-            >
-              {copied === "svg" ? <Check size={14} /> : <Vector size={14} />}
-              {t.copySvg}
-            </button>
             <button className="label-btn" onClick={() => copy(code, "code")}>
               {copied === "code" ? <Check size={14} /> : <Code size={14} />}
               {t.copyJsx}
             </button>
-            <details className="more" ref={menuRef}>
-              <summary className="icon-btn" aria-label="More actions">
-                <Dots size={16} />
-              </summary>
-              <div className="menu">
-                <button onClick={() => copy(window.location.href, "link")}>
-                  <Link size={14} />
-                  {copied === "link" ? t.copied : t.copyLink}
-                </button>
-                <button onClick={() => copy(cssSnippet(element, props as SnippetProps), "css")}>
-                  <Css size={14} />
-                  {copied === "css" ? t.copied : t.copyCss}
-                </button>
-                <button
-                  disabled={gifBusy}
-                  onClick={async () => {
-                    setGifBusy(true)
-                    try {
-                      await exportGif(element, props as SnippetProps)
-                      showToast(t.gifDone)
-                    } finally {
-                      setGifBusy(false)
-                      menuRef.current?.removeAttribute("open")
-                    }
-                  }}
-                >
-                  <GifIcon size={14} />
-                  {gifBusy ? "…" : t.exportGif}
-                </button>
-              </div>
-            </details>
+            <button
+              className="label-btn"
+              onClick={() => copy(cssSnippet(element, props as SnippetProps), "css")}
+            >
+              {copied === "css" ? <Check size={14} /> : <Css size={14} />}
+              {t.copyCss}
+            </button>
           </span>
         </div>
         <pre>

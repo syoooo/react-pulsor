@@ -62,5 +62,8 @@
   "homepage": "https://react-pulsor.vercel.app",
   "bugs": {
     "url": "https://github.com/syoooo/react-pulsor/issues"
+  },
+  "dependencies": {
+    "react-pulsor": "^0.1.0"
   }
 }

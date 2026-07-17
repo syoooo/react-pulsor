@@ -14,7 +14,6 @@ export interface Strings {
   copySvg: string
   exportGif: string
   gifDone: string
-  loopHint: string
   customGradient: string
   addStop: string
   feelHint: string
@@ -38,8 +37,6 @@ export const STRINGS: Record<Lang, Strings> = {
     copySvg: "copy svg",
     exportGif: "export gif",
     gifDone: "gif saved ✓",
-    loopHint:
-      "Pills trace the loop's outline, reaching inward by stroke — middle rows split around the opening. Aspect and squareness shape the silhouette.",
     customGradient: "custom gradient",
     addStop: "+ stop",
     feelHint: "sets envelope · easing · tempo",
@@ -61,8 +58,6 @@ export const STRINGS: Record<Lang, Strings> = {
     copySvg: "复制SVG",
     exportGif: "导出GIF",
     gifDone: "GIF已保存 ✓",
-    loopHint:
-      "药丸沿轮廓排布，向内伸入stroke的长度；中间几行会在开口处一分为二。轮廓形状由aspect和squareness决定。",
     customGradient: "自定义渐变",
     addStop: "+ 色标",
     feelHint: "一键设定包络 · 缓动 · 节奏",
@@ -84,8 +79,6 @@ export const STRINGS: Record<Lang, Strings> = {
     copySvg: "SVGをコピー",
     exportGif: "GIFを書き出す",
     gifDone: "GIFを保存しました ✓",
-    loopHint:
-      "ピルは輪郭をなぞり、strokeのぶんだけ内側へ。中ほどの行は、開口部で左右に分かれます。シルエットを決めるのはaspectとsquareness。",
     customGradient: "カスタムグラデーション",
     addStop: "+ ストップ",
     feelHint: "エンベロープ・イージング・テンポをまとめて設定",

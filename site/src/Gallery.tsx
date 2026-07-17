@@ -98,7 +98,7 @@ export function Gallery({
               onMouseLeave={() => setHovered((h) => (h === name ? null : h))}
             >
               <button
-                className="card-stage"
+                className="card-stage aperture"
                 onClick={() => onLoad(name)}
                 aria-label={`Load ${recipe.title} into the playground`}
               >
