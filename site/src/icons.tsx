@@ -7,7 +7,14 @@ import type { SVGProps } from "react"
  */
 function Icon({ children, size = 16, ...rest }: SVGProps<SVGSVGElement> & { size?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 256 256" fill="currentColor" aria-hidden {...rest}>
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 256 256"
+      fill="currentColor"
+      aria-hidden="true"
+      {...rest}
+    >
       {children}
     </svg>
   )
@@ -16,7 +23,10 @@ function Icon({ children, size = 16, ...rest }: SVGProps<SVGSVGElement> & { size
 export function Vector(props: SVGProps<SVGSVGElement> & { size?: number }) {
   return (
     <Icon {...props}>
-      <path opacity="0.2" d="M152,80a24,24,0,1,1-24-24A24,24,0,0,1,152,80ZM40,152a24,24,0,1,0,24,24A24,24,0,0,0,40,152Zm176,0a24,24,0,1,0,24,24A24,24,0,0,0,216,152Z" />
+      <path
+        opacity="0.2"
+        d="M152,80a24,24,0,1,1-24-24A24,24,0,0,1,152,80ZM40,152a24,24,0,1,0,24,24A24,24,0,0,0,40,152Zm176,0a24,24,0,1,0,24,24A24,24,0,0,0,216,152Z"
+      />
       <path d="M221.07,144.41A96.68,96.68,0,0,0,181,88h59a8,8,0,0,0,0-16H159a32,32,0,0,0-62,0H16a8,8,0,0,0,0,16H75a96.68,96.68,0,0,0-40.07,56.41A32,32,0,1,0,51.08,146,80.6,80.6,0,0,1,99,93.44a32,32,0,0,0,58.06,0A80.6,80.6,0,0,1,204.92,146a32,32,0,1,0,16.15-1.57ZM56,176a16,16,0,1,1-16-16A16,16,0,0,1,56,176Zm72-80a16,16,0,1,1,16-16A16,16,0,0,1,128,96Zm88,96a16,16,0,1,1,16-16A16,16,0,0,1,216,192Z" />
     </Icon>
   )
@@ -25,7 +35,10 @@ export function Vector(props: SVGProps<SVGSVGElement> & { size?: number }) {
 export function Check(props: SVGProps<SVGSVGElement> & { size?: number }) {
   return (
     <Icon {...props}>
-      <path opacity="0.2" d="M232,56V200a16,16,0,0,1-16,16H40a16,16,0,0,1-16-16V56A16,16,0,0,1,40,40H216A16,16,0,0,1,232,56Z" />
+      <path
+        opacity="0.2"
+        d="M232,56V200a16,16,0,0,1-16,16H40a16,16,0,0,1-16-16V56A16,16,0,0,1,40,40H216A16,16,0,0,1,232,56Z"
+      />
       <path d="M205.66,85.66l-96,96a8,8,0,0,1-11.32,0l-40-40a8,8,0,0,1,11.32-11.32L104,164.69l90.34-90.35a8,8,0,0,1,11.32,11.32Z" />
     </Icon>
   )
@@ -43,7 +56,10 @@ export function Code(props: SVGProps<SVGSVGElement> & { size?: number }) {
 export function Dots(props: SVGProps<SVGSVGElement> & { size?: number }) {
   return (
     <Icon {...props}>
-      <path opacity="0.2" d="M176,32V224a16,16,0,0,1-16,16H96a16,16,0,0,1-16-16V32A16,16,0,0,1,96,16h64A16,16,0,0,1,176,32Z" />
+      <path
+        opacity="0.2"
+        d="M176,32V224a16,16,0,0,1-16,16H96a16,16,0,0,1-16-16V32A16,16,0,0,1,96,16h64A16,16,0,0,1,176,32Z"
+      />
       <path d="M140,128a12,12,0,1,1-12-12A12,12,0,0,1,140,128ZM128,72a12,12,0,1,0-12-12A12,12,0,0,0,128,72Zm0,112a12,12,0,1,0,12,12A12,12,0,0,0,128,184Z" />
     </Icon>
   )
@@ -61,7 +77,10 @@ export function Css(props: SVGProps<SVGSVGElement> & { size?: number }) {
 export function GifIcon(props: SVGProps<SVGSVGElement> & { size?: number }) {
   return (
     <Icon {...props}>
-      <path opacity="0.2" d="M224,56V200a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V56A16,16,0,0,1,48,40H208A16,16,0,0,1,224,56Z" />
+      <path
+        opacity="0.2"
+        d="M224,56V200a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V56A16,16,0,0,1,48,40H208A16,16,0,0,1,224,56Z"
+      />
       <path d="M144,72V184a8,8,0,0,1-16,0V72a8,8,0,0,1,16,0Zm88-8H176a8,8,0,0,0-8,8V184a8,8,0,0,0,16,0V136h40a8,8,0,0,0,0-16H184V80h48a8,8,0,0,0,0-16ZM96,120H72a8,8,0,0,0,0,16H88v16a24,24,0,0,1-48,0V104A24,24,0,0,1,64,80c11.19,0,21.61,7.74,24.25,18a8,8,0,0,0,15.5-4C99.27,76.62,82.56,64,64,64a40,40,0,0,0-40,40v48a40,40,0,0,0,80,0V128A8,8,0,0,0,96,120Z" />
     </Icon>
   )
@@ -70,7 +89,10 @@ export function GifIcon(props: SVGProps<SVGSVGElement> & { size?: number }) {
 export function Link(props: SVGProps<SVGSVGElement> & { size?: number }) {
   return (
     <Icon {...props}>
-      <path opacity="0.2" d="M209.94,113.94l-96,96a48,48,0,0,1-67.88-67.88l96-96a48,48,0,0,1,67.88,67.88Z" />
+      <path
+        opacity="0.2"
+        d="M209.94,113.94l-96,96a48,48,0,0,1-67.88-67.88l96-96a48,48,0,0,1,67.88,67.88Z"
+      />
       <path d="M165.66,90.34a8,8,0,0,1,0,11.32l-64,64a8,8,0,0,1-11.32-11.32l64-64A8,8,0,0,1,165.66,90.34ZM215.6,40.4a56,56,0,0,0-79.2,0L106.34,70.45a8,8,0,0,0,11.32,11.32l30.06-30a40,40,0,0,1,56.57,56.56l-30.07,30.06a8,8,0,0,0,11.31,11.32L215.6,119.6a56,56,0,0,0,0-79.2ZM138.34,174.22l-30.06,30.06a40,40,0,1,1-56.56-56.57l30.05-30.05a8,8,0,0,0-11.32-11.32L40.4,136.4a56,56,0,0,0,79.2,79.2l30.06-30.07a8,8,0,0,0-11.32-11.31Z" />
     </Icon>
   )

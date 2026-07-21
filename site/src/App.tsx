@@ -1,6 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from "react"
-import { cssSnippet, PulseBars, PulseDots, PulseGrid, palettes, recipes, svgSnippet } from "react-pulsor"
-import type { SnippetProps } from "react-pulsor"
 import type {
   AnimateMode,
   GradientStop,
@@ -9,31 +7,41 @@ import type {
   PulseGridProps,
   Recipe,
   RecipeName,
+  SnippetProps,
 } from "react-pulsor"
 import {
-  ampFallback,
+  cssSnippet,
+  PulseBars,
+  PulseDots,
+  PulseGrid,
+  palettes,
+  recipes,
+  svgSnippet,
+} from "react-pulsor"
+import {
   ANIMATE_MODES,
+  ampFallback,
   COMPONENT_NAMES,
+  type Config,
   decodeShare,
   defaultConfig,
   EASINGS,
-  encodeShare,
+  type ElementKind,
   ENVELOPE_OPTIONS,
-  generateCode,
+  encodeShare,
   GRID_PATTERNS,
+  generateCode,
   LINEAR_PATTERNS,
   modeDefaults,
   propsFor,
   recipeToConfig,
-  type Config,
-  type ElementKind,
 } from "./defaults"
 import { exportGif } from "./exportGif"
 import { Gallery, RECIPE_SCALE, RecipeView } from "./Gallery"
-import { useI18n, type Lang } from "./i18n"
+import { type Lang, useI18n } from "./i18n"
 import { Check, Code, Copy, Css, GifIcon, Link, Vector } from "./icons"
 import { PropsSection } from "./PropsRef"
-import { highlightJsx, SegRow, Segmented, Section, Select, Slider, Swatches } from "./ui"
+import { highlightJsx, Section, Segmented, SegRow, Select, Slider, Swatches } from "./ui"
 
 function LoaderView({ element, props }: { element: ElementKind; props: Record<string, unknown> }) {
   if (element === "grid") return <PulseGrid {...(props as PulseGridProps)} />
@@ -107,7 +115,11 @@ export default function App() {
   useEffect(() => {
     const encoded = encodeShare(element, config)
     const base = window.location.pathname + window.location.search
-    window.history.replaceState(null, "", encoded ? `${base}#p=${encodeURIComponent(encoded)}` : base)
+    window.history.replaceState(
+      null,
+      "",
+      encoded ? `${base}#p=${encodeURIComponent(encoded)}` : base,
+    )
   }, [element, config])
 
   const set = (patch: Partial<Config>) =>
@@ -157,7 +169,8 @@ export default function App() {
   // Stays highlighted until one of the governed controls is touched.
   const applyFeel = (f: "calm" | "crisp" | "lively" | "urgent") => {
     if (f === "calm") set({ feelSel: f, envelopePreset: "breathe", easing: "auto", period: 1450 })
-    else if (f === "crisp") set({ feelSel: f, envelopePreset: "pulse", easing: "auto", period: 900 })
+    else if (f === "crisp")
+      set({ feelSel: f, envelopePreset: "pulse", easing: "auto", period: 900 })
     else if (f === "lively")
       set({
         feelSel: f,
@@ -177,7 +190,18 @@ export default function App() {
       <ScrollProgress />
       <nav className="nav">
         <a className="nav-brand" href="#top">
-          <PulseGrid rows={3} cols={3} cellSize={3.5} gap={1.5} radius={0.75} pattern="sparkle" seed={11} waves={2} period={1400} label="Pulsor" />
+          <PulseGrid
+            rows={3}
+            cols={3}
+            cellSize={3.5}
+            gap={1.5}
+            radius={0.75}
+            pattern="sparkle"
+            seed={11}
+            waves={2}
+            period={1400}
+            label="Pulsor"
+          />
           <span>Pulsor</span>
         </a>
         <div className="nav-links">
@@ -189,6 +213,7 @@ export default function App() {
           <div className="lang-switch" role="tablist" aria-label="Language">
             {(["en", "ja", "zh"] as Lang[]).map((l) => (
               <button
+                type="button"
                 key={l}
                 role="tab"
                 aria-selected={lang === l}
@@ -213,6 +238,7 @@ export default function App() {
         <div className="install">
           <code>npm i react-pulsor</code>
           <button
+            type="button"
             className="icon-btn"
             title={t.copy}
             aria-label={t.copy}
@@ -224,9 +250,13 @@ export default function App() {
 
         <div className="specimens">
           {SPECIMENS.map((name) => (
-            <button className="specimen" key={name} onClick={() => applyRecipe(name)}>
+            <button type="button" className="specimen" key={name} onClick={() => applyRecipe(name)}>
               <span className="specimen-stage aperture">
-                <span style={RECIPE_SCALE[name] ? { transform: `scale(${RECIPE_SCALE[name]})` } : undefined}>
+                <span
+                  style={
+                    RECIPE_SCALE[name] ? { transform: `scale(${RECIPE_SCALE[name]})` } : undefined
+                  }
+                >
                   <RecipeView recipe={recipes[name] as Recipe} />
                 </span>
               </span>
@@ -260,6 +290,7 @@ export default function App() {
           </div>
           <div className="hud hud-br">
             <button
+              type="button"
               className="label-btn"
               title={t.copySvg}
               onClick={() => copy(svgSnippet(element, props as SnippetProps), "svg")}
@@ -268,6 +299,7 @@ export default function App() {
               svg
             </button>
             <button
+              type="button"
               className="label-btn"
               title={t.exportGif}
               disabled={gifBusy}
@@ -278,6 +310,8 @@ export default function App() {
                     background: bg === "light" ? "#faf9f4" : "#0f0f09",
                   })
                   showToast(t.gifDone)
+                } catch {
+                  showToast(t.exportFailed)
                 } finally {
                   setGifBusy(false)
                 }
@@ -287,6 +321,7 @@ export default function App() {
               {gifBusy ? "…" : "gif"}
             </button>
             <button
+              type="button"
               className="label-btn"
               title={t.copyLink}
               onClick={() => copy(window.location.href, "link")}
@@ -309,11 +344,45 @@ export default function App() {
           <Section title="Shape">
             {element === "grid" && (
               <>
-                <Slider label="rows" value={config.rows} min={1} max={12} onChange={(v) => set({ rows: v })} />
-                <Slider label="cols" value={config.cols} min={1} max={12} onChange={(v) => set({ cols: v })} />
-                <Slider label="cell size" value={config.cellSize} min={2} max={20} onChange={(v) => set({ cellSize: v })} format={px} />
-                <Slider label="gap" value={config.gap} min={0} max={12} onChange={(v) => set({ gap: v })} format={px} />
-                <Slider label="radius" value={config.radius} min={0} max={10} step={0.5} onChange={(v) => set({ radius: v })} format={px} />
+                <Slider
+                  label="rows"
+                  value={config.rows}
+                  min={1}
+                  max={12}
+                  onChange={(v) => set({ rows: v })}
+                />
+                <Slider
+                  label="cols"
+                  value={config.cols}
+                  min={1}
+                  max={12}
+                  onChange={(v) => set({ cols: v })}
+                />
+                <Slider
+                  label="cell size"
+                  value={config.cellSize}
+                  min={2}
+                  max={20}
+                  onChange={(v) => set({ cellSize: v })}
+                  format={px}
+                />
+                <Slider
+                  label="gap"
+                  value={config.gap}
+                  min={0}
+                  max={12}
+                  onChange={(v) => set({ gap: v })}
+                  format={px}
+                />
+                <Slider
+                  label="radius"
+                  value={config.radius}
+                  min={0}
+                  max={10}
+                  step={0.5}
+                  onChange={(v) => set({ radius: v })}
+                  format={px}
+                />
               </>
             )}
             {element === "bars" && (
@@ -332,16 +401,49 @@ export default function App() {
                             orientation: "horizontal",
                             stroke: Math.round(config.ringSize * 0.3 * 100) / 100,
                           }
-                        : { barsArrangement: v, count: 5, thickness: 4, length: 18, orientation: "vertical" },
+                        : {
+                            barsArrangement: v,
+                            count: 5,
+                            thickness: 4,
+                            length: 18,
+                            orientation: "vertical",
+                          },
                     )
                   }
                 />
                 {config.barsArrangement === "line" ? (
                   <>
-                    <Slider label="count" value={config.count} min={2} max={16} onChange={(v) => set({ count: v })} />
-                    <Slider label="thickness" value={config.thickness} min={2} max={16} onChange={(v) => set({ thickness: v })} format={px} />
-                    <Slider label="length" value={config.length} min={6} max={48} onChange={(v) => set({ length: v })} format={px} />
-                    <Slider label="gap" value={config.gap} min={0} max={12} onChange={(v) => set({ gap: v })} format={px} />
+                    <Slider
+                      label="count"
+                      value={config.count}
+                      min={2}
+                      max={16}
+                      onChange={(v) => set({ count: v })}
+                    />
+                    <Slider
+                      label="thickness"
+                      value={config.thickness}
+                      min={2}
+                      max={16}
+                      onChange={(v) => set({ thickness: v })}
+                      format={px}
+                    />
+                    <Slider
+                      label="length"
+                      value={config.length}
+                      min={6}
+                      max={48}
+                      onChange={(v) => set({ length: v })}
+                      format={px}
+                    />
+                    <Slider
+                      label="gap"
+                      value={config.gap}
+                      min={0}
+                      max={12}
+                      onChange={(v) => set({ gap: v })}
+                      format={px}
+                    />
                     <SegRow
                       label="orientation"
                       value={config.orientation}
@@ -359,12 +461,55 @@ export default function App() {
                   </>
                 ) : (
                   <>
-                    <Slider label="stripes" value={config.count} min={3} max={16} onChange={(v) => set({ count: v })} />
-                    <Slider label="loop size" value={config.ringSize} min={16} max={64} onChange={(v) => set({ ringSize: v })} format={px} />
-                    <Slider label="aspect" value={config.aspect} min={0.6} max={1.4} step={0.02} onChange={(v) => set({ aspect: v })} />
-                    <Slider label="squareness" value={config.squareness} min={1} max={6} step={0.1} onChange={(v) => set({ squareness: v })} />
-                    <Slider label="stroke" value={config.stroke} min={2} max={24} step={0.5} onChange={(v) => set({ stroke: v })} format={px} />
-                    <Slider label="thickness" value={config.thickness} min={1} max={8} step={0.5} onChange={(v) => set({ thickness: v })} format={px} />
+                    <Slider
+                      label="stripes"
+                      value={config.count}
+                      min={3}
+                      max={16}
+                      onChange={(v) => set({ count: v })}
+                    />
+                    <Slider
+                      label="loop size"
+                      value={config.ringSize}
+                      min={16}
+                      max={64}
+                      onChange={(v) => set({ ringSize: v })}
+                      format={px}
+                    />
+                    <Slider
+                      label="aspect"
+                      value={config.aspect}
+                      min={0.6}
+                      max={1.4}
+                      step={0.02}
+                      onChange={(v) => set({ aspect: v })}
+                    />
+                    <Slider
+                      label="squareness"
+                      value={config.squareness}
+                      min={1}
+                      max={6}
+                      step={0.1}
+                      onChange={(v) => set({ squareness: v })}
+                    />
+                    <Slider
+                      label="stroke"
+                      value={config.stroke}
+                      min={2}
+                      max={24}
+                      step={0.5}
+                      onChange={(v) => set({ stroke: v })}
+                      format={px}
+                    />
+                    <Slider
+                      label="thickness"
+                      value={config.thickness}
+                      min={1}
+                      max={8}
+                      step={0.5}
+                      onChange={(v) => set({ thickness: v })}
+                      format={px}
+                    />
                     <SegRow
                       label="stripes run"
                       value={config.orientation}
@@ -373,7 +518,15 @@ export default function App() {
                     />
                   </>
                 )}
-                <Slider label="radius" value={config.radius} min={0} max={8} step={0.5} onChange={(v) => set({ radius: v })} format={px} />
+                <Slider
+                  label="radius"
+                  value={config.radius}
+                  min={0}
+                  max={8}
+                  step={0.5}
+                  onChange={(v) => set({ radius: v })}
+                  format={px}
+                />
               </>
             )}
             {element === "dots" && (
@@ -385,28 +538,75 @@ export default function App() {
                   onChange={(v) =>
                     set(
                       v === "loop"
-                        ? { dotsArrangement: v, count: 8, radius: Math.min(config.length, config.thickness) / 2 }
+                        ? {
+                            dotsArrangement: v,
+                            count: 8,
+                            radius: Math.min(config.length, config.thickness) / 2,
+                          }
                         : { dotsArrangement: v, count: 3, radius: config.size / 2 },
                     )
                   }
                 />
-                <Slider label="count" value={config.count} min={1} max={24} onChange={(v) => set({ count: v })} />
+                <Slider
+                  label="count"
+                  value={config.count}
+                  min={1}
+                  max={24}
+                  onChange={(v) => set({ count: v })}
+                />
                 {config.dotsArrangement === "line" ? (
                   <>
-                    <Slider label="size" value={config.size} min={2} max={20} onChange={(v) => set({ size: v, radius: v / 2 })} format={px} />
-                    <Slider label="gap" value={config.gap} min={0} max={16} onChange={(v) => set({ gap: v })} format={px} />
+                    <Slider
+                      label="size"
+                      value={config.size}
+                      min={2}
+                      max={20}
+                      onChange={(v) => set({ size: v, radius: v / 2 })}
+                      format={px}
+                    />
+                    <Slider
+                      label="gap"
+                      value={config.gap}
+                      min={0}
+                      max={16}
+                      onChange={(v) => set({ gap: v })}
+                      format={px}
+                    />
                   </>
                 ) : (
                   <>
-                    <Slider label="ring size" value={config.ringSize} min={12} max={64} onChange={(v) => set({ ringSize: v })} format={px} />
-                    <Slider label="aspect" value={config.aspect} min={0.6} max={1.4} step={0.02} onChange={(v) => set({ aspect: v })} />
-                    <Slider label="squareness" value={config.squareness} min={1} max={6} step={0.1} onChange={(v) => set({ squareness: v })} />
+                    <Slider
+                      label="ring size"
+                      value={config.ringSize}
+                      min={12}
+                      max={64}
+                      onChange={(v) => set({ ringSize: v })}
+                      format={px}
+                    />
+                    <Slider
+                      label="aspect"
+                      value={config.aspect}
+                      min={0.6}
+                      max={1.4}
+                      step={0.02}
+                      onChange={(v) => set({ aspect: v })}
+                    />
+                    <Slider
+                      label="squareness"
+                      value={config.squareness}
+                      min={1}
+                      max={6}
+                      step={0.1}
+                      onChange={(v) => set({ squareness: v })}
+                    />
                     <Slider
                       label="length"
                       value={config.length}
                       min={2}
                       max={16}
-                      onChange={(v) => set({ length: v, radius: Math.min(v, config.thickness) / 2 })}
+                      onChange={(v) =>
+                        set({ length: v, radius: Math.min(v, config.thickness) / 2 })
+                      }
                       format={px}
                     />
                     <Slider
@@ -414,7 +614,9 @@ export default function App() {
                       value={config.thickness}
                       min={2}
                       max={12}
-                      onChange={(v) => set({ thickness: v, radius: Math.min(config.length, v) / 2 })}
+                      onChange={(v) =>
+                        set({ thickness: v, radius: Math.min(config.length, v) / 2 })
+                      }
                       format={px}
                     />
                     <SegRow
@@ -429,7 +631,11 @@ export default function App() {
                   label="radius"
                   value={config.radius}
                   min={0}
-                  max={config.dotsArrangement === "loop" ? Math.min(config.length, config.thickness) / 2 : config.size / 2}
+                  max={
+                    config.dotsArrangement === "loop"
+                      ? Math.min(config.length, config.thickness) / 2
+                      : config.size / 2
+                  }
                   step={0.5}
                   onChange={(v) => set({ radius: v })}
                   format={px}
@@ -446,20 +652,74 @@ export default function App() {
               onChange={applyFeel}
             />
             <p className="ctl-caption">{t.feelHint}</p>
-            <Select label="pattern" value={config.pattern} options={patterns} onChange={(v) => set({ pattern: v })} />
-            <Select label="animate" value={config.animate} options={ANIMATE_MODES} onChange={(v) => setAnimate(v as AnimateMode)} />
+            <Select
+              label="pattern"
+              value={config.pattern}
+              options={patterns}
+              onChange={(v) => set({ pattern: v })}
+            />
+            <Select
+              label="animate"
+              value={config.animate}
+              options={ANIMATE_MODES}
+              onChange={(v) => setAnimate(v as AnimateMode)}
+            />
             <div className={feelFlash ? "feel-targets flash" : "feel-targets"} key={feelFlash}>
-              <Select label="envelope" value={config.envelopePreset} options={ENVELOPE_OPTIONS} onChange={(v) => set({ envelopePreset: v, feelSel: "" })} />
+              <Select
+                label="envelope"
+                value={config.envelopePreset}
+                options={ENVELOPE_OPTIONS}
+                onChange={(v) => set({ envelopePreset: v, feelSel: "" })}
+              />
               {config.envelopePreset === "custom" && (
                 <>
-                  <Slider label="attack" value={config.attack} min={0} max={1} step={0.01} onChange={(v) => set({ attack: v, feelSel: "" })} format={x100} />
-                  <Slider label="hold" value={config.hold} min={0} max={1} step={0.01} onChange={(v) => set({ hold: v, feelSel: "" })} format={x100} />
-                  <Slider label="release" value={config.release} min={0} max={1} step={0.01} onChange={(v) => set({ release: v, feelSel: "" })} format={x100} />
+                  <Slider
+                    label="attack"
+                    value={config.attack}
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    onChange={(v) => set({ attack: v, feelSel: "" })}
+                    format={x100}
+                  />
+                  <Slider
+                    label="hold"
+                    value={config.hold}
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    onChange={(v) => set({ hold: v, feelSel: "" })}
+                    format={x100}
+                  />
+                  <Slider
+                    label="release"
+                    value={config.release}
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    onChange={(v) => set({ release: v, feelSel: "" })}
+                    format={x100}
+                  />
                 </>
               )}
-              <Slider label="period" value={config.period} min={200} max={3000} step={50} onChange={(v) => set({ period: v, feelSel: "" })} format={ms} />
+              <Slider
+                label="period"
+                value={config.period}
+                min={200}
+                max={3000}
+                step={50}
+                onChange={(v) => set({ period: v, feelSel: "" })}
+                format={ms}
+              />
             </div>
-            <Slider label="waves" value={config.waves} min={1} max={4} step={0.5} onChange={(v) => set({ waves: v })} />
+            <Slider
+              label="waves"
+              value={config.waves}
+              min={1}
+              max={4}
+              step={0.5}
+              onChange={(v) => set({ waves: v })}
+            />
           </Section>
 
           <Section title="Color">
@@ -469,6 +729,7 @@ export default function App() {
               onSelect={(name) => set({ paletteMode: "preset", palettePreset: name })}
             />
             <button
+              type="button"
               className={config.paletteMode === "custom" ? "custom-toggle active" : "custom-toggle"}
               onClick={() => set({ paletteMode: "custom" })}
             >
@@ -478,12 +739,19 @@ export default function App() {
               <div className="custom-stops">
                 {config.customStops.map((color, i) => (
                   <span className="stop" key={i}>
-                    <input type="color" value={color} onChange={(e) => setStop(i, e.target.value)} />
+                    <input
+                      type="color"
+                      value={color}
+                      onChange={(e) => setStop(i, e.target.value)}
+                    />
                     {config.customStops.length > 2 && (
                       <button
+                        type="button"
                         className="stop-remove"
                         aria-label="Remove stop"
-                        onClick={() => set({ customStops: config.customStops.filter((_, j) => j !== i) })}
+                        onClick={() =>
+                          set({ customStops: config.customStops.filter((_, j) => j !== i) })
+                        }
                       >
                         ×
                       </button>
@@ -492,6 +760,7 @@ export default function App() {
                 ))}
                 {config.customStops.length < 4 && (
                   <button
+                    type="button"
                     className="stop-add"
                     onClick={() => set({ customStops: [...config.customStops, "#8A7DFF"] })}
                   >
@@ -520,31 +789,100 @@ export default function App() {
                     onChange={(v) => set({ progressMode: v === "progress" })}
                   />
                   {config.progressMode && (
-                    <Slider label="progress" value={config.progress} min={0} max={1} step={0.01} onChange={(v) => set({ progress: v })} format={x100} />
+                    <Slider
+                      label="progress"
+                      value={config.progress}
+                      min={0}
+                      max={1}
+                      step={0.01}
+                      onChange={(v) => set({ progress: v })}
+                      format={x100}
+                    />
                   )}
                 </>
               )}
-              <Slider label="intensity" value={config.intensity} min={0} max={1} step={0.01} onChange={(v) => set({ intensity: v })} format={x100} />
-              <Slider label="appear delay" value={config.appearDelay} min={0} max={1000} step={50} onChange={(v) => set({ appearDelay: v })} format={ms} />
+              <Slider
+                label="intensity"
+                value={config.intensity}
+                min={0}
+                max={1}
+                step={0.01}
+                onChange={(v) => set({ intensity: v })}
+                format={x100}
+              />
+              <Slider
+                label="appear delay"
+                value={config.appearDelay}
+                min={0}
+                max={1000}
+                step={50}
+                onChange={(v) => set({ appearDelay: v })}
+                format={ms}
+              />
             </div>
           </details>
 
           <details className="finetune">
             <summary>Advanced</summary>
             <div className="finetune-body">
-              <Select label="easing" value={config.easing} options={EASINGS} onChange={(v) => set({ easing: v, feelSel: "" })} />
-              <Slider label="dim" value={config.dim} min={0} max={1} step={0.01} onChange={(v) => set({ dim: v })} format={x100} />
+              <Select
+                label="easing"
+                value={config.easing}
+                options={EASINGS}
+                onChange={(v) => set({ easing: v, feelSel: "" })}
+              />
+              <Slider
+                label="dim"
+                value={config.dim}
+                min={0}
+                max={1}
+                step={0.01}
+                onChange={(v) => set({ dim: v })}
+                format={x100}
+              />
               {usesRestScale && (
-                <Slider label="rest scale" value={config.restScale} min={0} max={1} step={0.01} onChange={(v) => set({ restScale: v })} format={x100} />
+                <Slider
+                  label="rest scale"
+                  value={config.restScale}
+                  min={0}
+                  max={1}
+                  step={0.01}
+                  onChange={(v) => set({ restScale: v })}
+                  format={x100}
+                />
               )}
               {config.animate === "bounce" && (
-                <Slider label="amplitude" value={config.amplitude} min={0} max={24} step={0.5} onChange={(v) => set({ amplitude: v })} format={px} />
+                <Slider
+                  label="amplitude"
+                  value={config.amplitude}
+                  min={0}
+                  max={24}
+                  step={0.5}
+                  onChange={(v) => set({ amplitude: v })}
+                  format={px}
+                />
               )}
               {config.animate === "sway" && (
-                <Slider label="amplitude" value={config.amplitude} min={0} max={45} step={1} onChange={(v) => set({ amplitude: v })} format={(v) => `${v}°`} />
+                <Slider
+                  label="amplitude"
+                  value={config.amplitude}
+                  min={0}
+                  max={45}
+                  step={1}
+                  onChange={(v) => set({ amplitude: v })}
+                  format={(v) => `${v}°`}
+                />
               )}
               {config.animate === "flip" && (
-                <Slider label="amplitude" value={config.amplitude} min={0} max={360} step={5} onChange={(v) => set({ amplitude: v })} format={(v) => `${v}°`} />
+                <Slider
+                  label="amplitude"
+                  value={config.amplitude}
+                  min={0}
+                  max={360}
+                  step={5}
+                  onChange={(v) => set({ amplitude: v })}
+                  format={(v) => `${v}°`}
+                />
               )}
               <Select
                 label="color by"
@@ -564,11 +902,16 @@ export default function App() {
                 />
               )}
               {config.pattern === "sparkle" && (
-                <Slider label="seed" value={config.seed} min={1} max={64} onChange={(v) => set({ seed: v })} />
+                <Slider
+                  label="seed"
+                  value={config.seed}
+                  min={1}
+                  max={64}
+                  onChange={(v) => set({ seed: v })}
+                />
               )}
             </div>
           </details>
-
         </aside>
       </section>
 
@@ -582,11 +925,12 @@ export default function App() {
             <i />
           </span>
           <span className="code-actions">
-            <button className="label-btn" onClick={() => copy(code, "code")}>
+            <button type="button" className="label-btn" onClick={() => copy(code, "code")}>
               {copied === "code" ? <Check size={14} /> : <Code size={14} />}
               {t.copyJsx}
             </button>
             <button
+              type="button"
               className="label-btn"
               onClick={() => copy(cssSnippet(element, props as SnippetProps), "css")}
             >
@@ -622,7 +966,9 @@ export default function App() {
           <PulseDots count={3} size={5} gap={3} period={1000} label="" aria-hidden />
           <span>Pulsor</span>
         </div>
-        <span className="footer-meta">MIT · react-pulsor · zero dependencies · compositor-only animation</span>
+        <span className="footer-meta">
+          MIT · react-pulsor · zero dependencies · compositor-only animation
+        </span>
       </footer>
     </div>
   )

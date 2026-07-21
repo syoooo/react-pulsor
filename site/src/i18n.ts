@@ -14,6 +14,7 @@ export interface Strings {
   copySvg: string
   exportGif: string
   gifDone: string
+  exportFailed: string
   customGradient: string
   addStop: string
   feelHint: string
@@ -37,6 +38,7 @@ export const STRINGS: Record<Lang, Strings> = {
     copySvg: "copy svg",
     exportGif: "export gif",
     gifDone: "gif saved ✓",
+    exportFailed: "export failed ✕",
     customGradient: "custom gradient",
     addStop: "+ stop",
     feelHint: "sets envelope · easing · tempo",
@@ -58,6 +60,7 @@ export const STRINGS: Record<Lang, Strings> = {
     copySvg: "复制SVG",
     exportGif: "导出GIF",
     gifDone: "GIF已保存 ✓",
+    exportFailed: "导出失败 ✕",
     customGradient: "自定义渐变",
     addStop: "+ 色标",
     feelHint: "一键设定包络 · 缓动 · 节奏",
@@ -79,6 +82,7 @@ export const STRINGS: Record<Lang, Strings> = {
     copySvg: "SVGをコピー",
     exportGif: "GIFを書き出す",
     gifDone: "GIFを保存しました ✓",
+    exportFailed: "書き出しに失敗しました ✕",
     customGradient: "カスタムグラデーション",
     addStop: "+ ストップ",
     feelHint: "エンベロープ・イージング・テンポをまとめて設定",

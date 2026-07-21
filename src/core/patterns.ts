@@ -36,7 +36,9 @@ function shuffledIndices(n: number, seed: number): number[] {
     ;[order[i], order[j]] = [order[j], order[i]]
   }
   const d = new Array<number>(n)
-  order.forEach((el, rank) => (d[el] = rank))
+  order.forEach((el, rank) => {
+    d[el] = rank
+  })
   return d
 }
 

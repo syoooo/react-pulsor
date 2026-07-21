@@ -1,9 +1,16 @@
 import { useMemo } from "react"
 import { linearSliceColors, resolveColors } from "../core/color"
-import { CORE_KEYS, htmlAttrs, resolveCore, spread, useLoaderCore } from "../core/internal"
 import type { ResolvedCore } from "../core/internal"
-import { stripedO } from "../core/path"
+import {
+  ariaProps,
+  CORE_KEYS,
+  htmlAttrs,
+  resolveCore,
+  spread,
+  useLoaderCore,
+} from "../core/internal"
 import type { StripeSegment } from "../core/path"
+import { stripedO } from "../core/path"
 import { linearPhases } from "../core/patterns"
 import type { BarsPattern, PulseBarsProps, StretchOrigin } from "../types"
 
@@ -76,11 +83,7 @@ export function barsSegments(c: ResolvedBars): StripeSegment[] {
 }
 
 /** One background per rendered element: per segment in a loop, per bar in a line. */
-export function barsColors(
-  c: ResolvedBars,
-  phases: number[],
-  segments: StripeSegment[],
-): string[] {
+export function barsColors(c: ResolvedBars, phases: number[], segments: StripeSegment[]): string[] {
   if (c.glyph) {
     if (c.colorBy === "linear") {
       return linearSliceColors(
@@ -138,7 +141,18 @@ export function PulseBars(props: PulseBarsProps) {
   )
   const colors = useMemo(
     () => barsColors(c, phases, segments),
-    [c.palette, c.colorBy, c.gradientAngle, c.glyph, c.vertical, c.thickness, c.length, c.gap, phases, segments],
+    [
+      c.palette,
+      c.colorBy,
+      c.gradientAngle,
+      c.glyph,
+      c.vertical,
+      c.thickness,
+      c.length,
+      c.gap,
+      phases,
+      segments,
+    ],
   )
 
   const core = useLoaderCore({
@@ -195,8 +209,7 @@ export function PulseBars(props: PulseBarsProps) {
 
   return (
     <span
-      role="status"
-      aria-label={c.label}
+      {...ariaProps(c.label)}
       className={core.containerClass(props.className)}
       style={{
         display: "inline-flex",

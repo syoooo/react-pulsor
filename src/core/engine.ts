@@ -97,7 +97,10 @@ function shapeToFrames({ attack, hold = 0, release }: EnvelopeShape): EnvelopeFr
   const r = clamp01(release)
   const peakEnd = Math.min(1, a + h)
   const restAt = Math.min(1, a + h + r)
-  const frames: EnvelopeFrame[] = [{ at: 0, level: 0 }, { at: a, level: 1 }]
+  const frames: EnvelopeFrame[] = [
+    { at: 0, level: 0 },
+    { at: a, level: 1 },
+  ]
   if (peakEnd > a) frames.push({ at: peakEnd, level: 1 })
   if (restAt > peakEnd) frames.push({ at: restAt, level: 0 })
   if (restAt < 1) frames.push({ at: 1, level: 0 })
@@ -160,7 +163,8 @@ const SECONDARY_LAG = 0.06
 
 function frameDecls(spec: KeyframeSpec, opacityLevel: number, transformLevel: number): string {
   const decls: string[] = []
-  if (spec.dim < 1) decls.push(`opacity:${round(clamp01(spec.dim + (1 - spec.dim) * opacityLevel))}`)
+  if (spec.dim < 1)
+    decls.push(`opacity:${round(clamp01(spec.dim + (1 - spec.dim) * opacityLevel))}`)
   const scaleOf = (level: number) =>
     round(Math.max(0, spec.restScale + (1 - spec.restScale) * level))
   switch (spec.animate) {

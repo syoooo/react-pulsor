@@ -1,9 +1,16 @@
 import { useMemo } from "react"
 import { linearSliceColors, resolveColors } from "../core/color"
-import { CORE_KEYS, htmlAttrs, resolveCore, spread, useLoaderCore } from "../core/internal"
 import type { ResolvedCore } from "../core/internal"
-import { superellipsePoints } from "../core/path"
+import {
+  ariaProps,
+  CORE_KEYS,
+  htmlAttrs,
+  resolveCore,
+  spread,
+  useLoaderCore,
+} from "../core/internal"
 import type { RingPoint } from "../core/path"
+import { superellipsePoints } from "../core/path"
 import { linearPhases } from "../core/patterns"
 import type { DotsPattern, PulseDotsProps, RingAlign } from "../types"
 
@@ -115,13 +122,23 @@ export function PulseDots(props: PulseDotsProps) {
     () => linearPhases(c.pattern, c.count, 1, c.seed),
     [c.pattern, c.count, c.seed],
   )
-  const points = useMemo(
-    () => dotsPoints(c),
-    [c.loop, c.count, c.ringSize, c.aspect, c.squareness],
-  )
+  const points = useMemo(() => dotsPoints(c), [c.loop, c.count, c.ringSize, c.aspect, c.squareness])
   const colors = useMemo(
     () => dotsColors(c, phases, points),
-    [c.palette, c.colorBy, c.gradientAngle, c.loop, c.size, c.gap, c.length, c.thickness, c.align, phases, points, c.count],
+    [
+      c.palette,
+      c.colorBy,
+      c.gradientAngle,
+      c.loop,
+      c.size,
+      c.gap,
+      c.length,
+      c.thickness,
+      c.align,
+      phases,
+      points,
+      c.count,
+    ],
   )
 
   const core = useLoaderCore({
@@ -187,8 +204,7 @@ export function PulseDots(props: PulseDotsProps) {
 
   return (
     <span
-      role="status"
-      aria-label={c.label}
+      {...ariaProps(c.label)}
       className={core.containerClass(props.className)}
       style={{
         display: "inline-flex",

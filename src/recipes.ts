@@ -139,7 +139,8 @@ export const recipes = {
   monogram: {
     element: "bars",
     title: "Monogram",
-    blurb: "A badge built from stripes — scanlines around a loop. Tune stroke and squareness to taste.",
+    blurb:
+      "A badge built from stripes — scanlines around a loop. Tune stroke and squareness to taste.",
     props: {
       arrangement: "loop",
       count: 8,

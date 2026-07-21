@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react"
 import type { CSSProperties, ReactNode } from "react"
+import { useEffect, useRef, useState } from "react"
 import type { GradientStop } from "react-pulsor"
 
 export function Section({ title, children }: { title: string; children: ReactNode }) {
@@ -109,7 +109,14 @@ export function Slider({
         style={{ "--fill": `${fill}%` } as CSSProperties}
         onChange={(e) => onChange(Number(e.target.value))}
       />
-      <ValueInput value={value} min={min} max={max} step={step} onChange={onChange} format={format} />
+      <ValueInput
+        value={value}
+        min={min}
+        max={max}
+        step={step}
+        onChange={onChange}
+        format={format}
+      />
     </div>
   )
 }
@@ -153,6 +160,7 @@ export function Segmented<T extends string>({
     <div className="segmented" role="tablist">
       {options.map((o) => (
         <button
+          type="button"
           key={o}
           role="tab"
           aria-selected={o === value}
@@ -198,6 +206,7 @@ export function Swatches({
     <div className="swatches">
       {entries.map(([name, stops]) => (
         <button
+          type="button"
           key={name}
           title={name}
           aria-label={`Palette ${name}`}
@@ -252,6 +261,7 @@ export function highlightJsx(code: string): ReactNode[] {
   let last = 0
   let m: RegExpExecArray | null
   let key = 0
+  // biome-ignore lint/suspicious/noAssignInExpressions: idiomatic exec loop
   while ((m = re.exec(code)) !== null) {
     if (m.index > last) out.push(code.slice(last, m.index))
     const [text] = m

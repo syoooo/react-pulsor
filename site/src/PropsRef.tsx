@@ -13,7 +13,7 @@ interface PropRow {
 const SHARED_PROPS: PropRow[] = [
   {
     name: "palette",
-    type: 'preset | color | GradientStop[]',
+    type: "preset | color | GradientStop[]",
     def: '"aurora"',
     desc: {
       en: "Palette preset, single CSS color, or gradient stops (sampled in OKLab)",
@@ -199,7 +199,11 @@ const SHARED_PROPS: PropRow[] = [
     name: "label",
     type: "string",
     def: '"Loading"',
-    desc: { en: "Accessible aria-label", zh: "无障碍aria-label", ja: "読み上げに使われるaria-label" },
+    desc: {
+      en: "Accessible aria-label",
+      zh: "无障碍aria-label",
+      ja: "読み上げに使われるaria-label",
+    },
   },
   {
     name: "respectReducedMotion",
@@ -215,18 +219,49 @@ const SHARED_PROPS: PropRow[] = [
 
 const GRID_PATTERN =
   '"ripple" | "sweep-up" | "sweep-down" | "sweep-left" | "sweep-right" | "diagonal" | "chevron" | "snake" | "spiral" | "sparkle" | "pulse"'
-const SEQ_PATTERN = '"wave" | "wave-reverse" | "center" | "edges" | "alternate" | "sparkle" | "pulse"'
+const SEQ_PATTERN =
+  '"wave" | "wave-reverse" | "center" | "edges" | "alternate" | "sparkle" | "pulse"'
 
 const COMPONENT_PROPS: Record<ElementKind, PropRow[]> = {
   grid: [
-    { name: "pattern", type: GRID_PATTERN, def: '"ripple"', desc: { en: "How the wave travels the grid", zh: "波的行进方式", ja: "波の進み方" } },
-    { name: "rows / cols", type: "number", def: "4 / 4", desc: { en: "Grid dimensions", zh: "行数与列数", ja: "行と列の数" } },
-    { name: "cellSize", type: "number (px)", def: "6", desc: { en: "Cell edge length", zh: "格子边长", ja: "セルの一辺" } },
-    { name: "gap", type: "number (px)", def: "3", desc: { en: "Gap between cells", zh: "格子间距", ja: "セルの間隔" } },
-    { name: "radius", type: "number (px)", def: "1.5", desc: { en: "Cell corner radius", zh: "格子圆角", ja: "セルの角丸" } },
+    {
+      name: "pattern",
+      type: GRID_PATTERN,
+      def: '"ripple"',
+      desc: { en: "How the wave travels the grid", zh: "波的行进方式", ja: "波の進み方" },
+    },
+    {
+      name: "rows / cols",
+      type: "number",
+      def: "4 / 4",
+      desc: { en: "Grid dimensions", zh: "行数与列数", ja: "行と列の数" },
+    },
+    {
+      name: "cellSize",
+      type: "number (px)",
+      def: "6",
+      desc: { en: "Cell edge length", zh: "格子边长", ja: "セルの一辺" },
+    },
+    {
+      name: "gap",
+      type: "number (px)",
+      def: "3",
+      desc: { en: "Gap between cells", zh: "格子间距", ja: "セルの間隔" },
+    },
+    {
+      name: "radius",
+      type: "number (px)",
+      def: "1.5",
+      desc: { en: "Cell corner radius", zh: "格子圆角", ja: "セルの角丸" },
+    },
   ],
   bars: [
-    { name: "pattern", type: SEQ_PATTERN, def: '"wave"', desc: { en: "How the wave travels the bars", zh: "波的行进方式", ja: "波の進み方" } },
+    {
+      name: "pattern",
+      type: SEQ_PATTERN,
+      def: '"wave"',
+      desc: { en: "How the wave travels the bars", zh: "波的行进方式", ja: "波の進み方" },
+    },
     {
       name: "arrangement",
       type: '"line" | "loop"',
@@ -237,30 +272,96 @@ const COMPONENT_PROPS: Record<ElementKind, PropRow[]> = {
         ja: "直線か、ピルを重ねたストライプループか",
       },
     },
-    { name: "count", type: "number", def: "5 / 8 (loop)", desc: { en: "Bars; stripes in a loop", zh: "条数；loop时为条纹数", ja: "バー数。loopではストライプ数" } },
+    {
+      name: "count",
+      type: "number",
+      def: "5 / 8 (loop)",
+      desc: {
+        en: "Bars; stripes in a loop",
+        zh: "条数；loop时为条纹数",
+        ja: "バー数。loopではストライプ数",
+      },
+    },
     {
       name: "orientation",
       type: '"vertical" | "horizontal"',
       def: '"vertical" / "horizontal" (loop)',
       desc: { en: "Stripe direction", zh: "条纹方向", ja: "ストライプの向き" },
     },
-    { name: "thickness", type: "number (px)", def: "4 / 3 (loop)", desc: { en: "Bar thickness", zh: "条的粗细", ja: "バーの太さ" } },
-    { name: "length", type: "number (px)", def: "18", desc: { en: "Line only", zh: "仅line", ja: "lineのみ" } },
-    { name: "gap", type: "number (px)", def: "3", desc: { en: "Line only", zh: "仅line", ja: "lineのみ" } },
-    { name: "radius", type: "number (px)", def: "2", desc: { en: "Bar corner radius", zh: "条的圆角", ja: "バーの角丸" } },
+    {
+      name: "thickness",
+      type: "number (px)",
+      def: "4 / 3 (loop)",
+      desc: { en: "Bar thickness", zh: "条的粗细", ja: "バーの太さ" },
+    },
+    {
+      name: "length",
+      type: "number (px)",
+      def: "18",
+      desc: { en: "Line only", zh: "仅line", ja: "lineのみ" },
+    },
+    {
+      name: "gap",
+      type: "number (px)",
+      def: "3",
+      desc: { en: "Line only", zh: "仅line", ja: "lineのみ" },
+    },
+    {
+      name: "radius",
+      type: "number (px)",
+      def: "2",
+      desc: { en: "Bar corner radius", zh: "条的圆角", ja: "バーの角丸" },
+    },
     {
       name: "origin",
       type: '"center" | "start" | "end"',
       def: '"center"',
-      desc: { en: "Fixed end for stretch (line only)", zh: "stretch的固定端（仅line）", ja: "stretchの固定端（lineのみ）" },
+      desc: {
+        en: "Fixed end for stretch (line only)",
+        zh: "stretch的固定端（仅line）",
+        ja: "stretchの固定端（lineのみ）",
+      },
     },
-    { name: "ringSize", type: "number (px)", def: "28", desc: { en: "Loop height (loop only)", zh: "环高（仅loop）", ja: "ループの高さ（loopのみ）" } },
-    { name: "aspect", type: "number", def: "1", desc: { en: "Loop width ÷ height", zh: "环的宽高比", ja: "ループの幅 ÷ 高さ" } },
-    { name: "squareness", type: "number", def: "2", desc: { en: "Superellipse exponent: 2 oval, 4 squarish", zh: "超椭圆指数：2椭圆、4方圆", ja: "スーパー楕円の指数。2で楕円、4で角丸の四角" } },
-    { name: "stroke", type: "number (px)", def: "ringSize × 0.3", desc: { en: "How far pills reach inward from the outline", zh: "药丸自轮廓向内伸入的长度", ja: "輪郭から内側へのピルの長さ" } },
+    {
+      name: "ringSize",
+      type: "number (px)",
+      def: "28",
+      desc: { en: "Loop height (loop only)", zh: "环高（仅loop）", ja: "ループの高さ（loopのみ）" },
+    },
+    {
+      name: "aspect",
+      type: "number",
+      def: "1",
+      desc: { en: "Loop width ÷ height", zh: "环的宽高比", ja: "ループの幅 ÷ 高さ" },
+    },
+    {
+      name: "squareness",
+      type: "number",
+      def: "2",
+      desc: {
+        en: "Superellipse exponent: 2 oval, 4 squarish",
+        zh: "超椭圆指数：2椭圆、4方圆",
+        ja: "スーパー楕円の指数。2で楕円、4で角丸の四角",
+      },
+    },
+    {
+      name: "stroke",
+      type: "number (px)",
+      def: "ringSize × 0.3",
+      desc: {
+        en: "How far pills reach inward from the outline",
+        zh: "药丸自轮廓向内伸入的长度",
+        ja: "輪郭から内側へのピルの長さ",
+      },
+    },
   ],
   dots: [
-    { name: "pattern", type: SEQ_PATTERN, def: '"wave"', desc: { en: "How the wave travels the dots", zh: "波的行进方式", ja: "波の進み方" } },
+    {
+      name: "pattern",
+      type: SEQ_PATTERN,
+      def: '"wave"',
+      desc: { en: "How the wave travels the dots", zh: "波的行进方式", ja: "波の進み方" },
+    },
     {
       name: "arrangement",
       type: '"line" | "loop"',
@@ -271,22 +372,81 @@ const COMPONENT_PROPS: Record<ElementKind, PropRow[]> = {
         ja: "一列のドットか、閉じたループ上のエレメントか",
       },
     },
-    { name: "count", type: "number", def: "3 / 8 (loop)", desc: { en: "Number of elements", zh: "元素数量", ja: "エレメントの数" } },
-    { name: "size", type: "number (px)", def: "7", desc: { en: "Dot diameter (line only)", zh: "圆点直径（仅 line）", ja: "ドット径（line のみ）" } },
-    { name: "gap", type: "number (px)", def: "4", desc: { en: "Line only", zh: "仅 line", ja: "line のみ" } },
-    { name: "ringSize", type: "number (px)", def: "28", desc: { en: "Loop height through element centers (loop only)", zh: "过元素中心的环高（仅 loop）", ja: "エレメント中心を通るループの高さ（loop のみ）" } },
-    { name: "aspect", type: "number", def: "1", desc: { en: "Loop width ÷ height", zh: "环的宽高比", ja: "ループの幅 ÷ 高さ" } },
-    { name: "squareness", type: "number", def: "2", desc: { en: "2 ellipse, 4 squircle, 1 diamond", zh: "2 椭圆、4 方圆、1 菱形", ja: "2 で楕円、4 でスクワークル、1 でひし形" } },
+    {
+      name: "count",
+      type: "number",
+      def: "3 / 8 (loop)",
+      desc: { en: "Number of elements", zh: "元素数量", ja: "エレメントの数" },
+    },
+    {
+      name: "size",
+      type: "number (px)",
+      def: "7",
+      desc: {
+        en: "Dot diameter (line only)",
+        zh: "圆点直径（仅 line）",
+        ja: "ドット径（line のみ）",
+      },
+    },
+    {
+      name: "gap",
+      type: "number (px)",
+      def: "4",
+      desc: { en: "Line only", zh: "仅 line", ja: "line のみ" },
+    },
+    {
+      name: "ringSize",
+      type: "number (px)",
+      def: "28",
+      desc: {
+        en: "Loop height through element centers (loop only)",
+        zh: "过元素中心的环高（仅 loop）",
+        ja: "エレメント中心を通るループの高さ（loop のみ）",
+      },
+    },
+    {
+      name: "aspect",
+      type: "number",
+      def: "1",
+      desc: { en: "Loop width ÷ height", zh: "环的宽高比", ja: "ループの幅 ÷ 高さ" },
+    },
+    {
+      name: "squareness",
+      type: "number",
+      def: "2",
+      desc: {
+        en: "2 ellipse, 4 squircle, 1 diamond",
+        zh: "2 椭圆、4 方圆、1 菱形",
+        ja: "2 で楕円、4 でスクワークル、1 でひし形",
+      },
+    },
     {
       name: "align",
       type: '"tangent" | "radial"',
       def: '"tangent"',
-      desc: { en: "tangent traces the outline; radial points at the center", zh: "tangent 沿轮廓排布，radial 指向圆心", ja: "tangent は輪郭に沿う、radial は中心を向く" },
+      desc: {
+        en: "tangent traces the outline; radial points at the center",
+        zh: "tangent 沿轮廓排布，radial 指向圆心",
+        ja: "tangent は輪郭に沿う、radial は中心を向く",
+      },
     },
-    { name: "length / thickness", type: "number (px)", def: "6 / 6", desc: { en: "Loop element box: equal = dots, elongated = ticks", zh: "loop 元素尺寸：相等是圆点，拉长是刻度", ja: "loop エレメントの寸法。同値でドット、長くすると目盛り状" } },
-    { name: "radius", type: "number (px)", def: "half the element", desc: { en: "Corner radius", zh: "圆角", ja: "角丸" } },
+    {
+      name: "length / thickness",
+      type: "number (px)",
+      def: "6 / 6",
+      desc: {
+        en: "Loop element box: equal = dots, elongated = ticks",
+        zh: "loop 元素尺寸：相等是圆点，拉长是刻度",
+        ja: "loop エレメントの寸法。同値でドット、長くすると目盛り状",
+      },
+    },
+    {
+      name: "radius",
+      type: "number (px)",
+      def: "half the element",
+      desc: { en: "Corner radius", zh: "圆角", ja: "角丸" },
+    },
   ],
-
 }
 
 function PropsTable({ rows, lang, t }: { rows: PropRow[]; lang: Lang; t: Strings }) {

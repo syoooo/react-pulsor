@@ -2,6 +2,10 @@
 
 [English](https://github.com/syoooo/react-pulsor/blob/main/README.md) · [简体中文](https://github.com/syoooo/react-pulsor/blob/main/README.zh-CN.md) · **日本語**
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/syoooo/react-pulsor/main/docs/hero.svg" alt="Pulsor loaders" width="320" />
+</p>
+
 **デモ → [react-pulsor.vercel.app](https://react-pulsor.vercel.app)**
 
 自在に組み替えられる React のローディングインジケーター。グリッド、バー、ドットを、直線にも輪にも並べて、**位相場**と**モーションエンベロープ**、**OKLab グラデーション**で動かす。走るのはコンポジタだけの keyframe 一本。依存はゼロ、CSS の import も要らない。

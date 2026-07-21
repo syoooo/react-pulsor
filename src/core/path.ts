@@ -50,8 +50,8 @@ export function stripedO(
 
   const halfWidth = (y: number): number => {
     if (B <= 0 || A <= 0) return 0
-    const t = 1 - Math.pow(Math.abs(y) / B, n)
-    return t <= 0 ? 0 : A * Math.pow(t, 1 / n)
+    const t = 1 - (Math.abs(y) / B) ** n
+    return t <= 0 ? 0 : A * t ** (1 / n)
   }
 
   const segments: StripeSegment[] = []
@@ -97,8 +97,8 @@ export function superellipsePoints(
     const c = Math.cos(th)
     const s = Math.sin(th)
     raw.push({
-      x: a * Math.sign(c) * Math.pow(Math.abs(c), e),
-      y: b * Math.sign(s) * Math.pow(Math.abs(s), e),
+      x: a * Math.sign(c) * Math.abs(c) ** e,
+      y: b * Math.sign(s) * Math.abs(s) ** e,
     })
   }
 

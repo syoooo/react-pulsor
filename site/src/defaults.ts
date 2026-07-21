@@ -1,5 +1,5 @@
-import { motionDefaults, palettes } from "react-pulsor"
 import type { AnimateMode, GradientStop, Recipe } from "react-pulsor"
+import { motionDefaults, palettes } from "react-pulsor"
 
 export type ElementKind = "grid" | "bars" | "dots"
 
@@ -95,10 +95,7 @@ export function modeDefaults(mode: AnimateMode, fallbackAmplitude: number) {
   return motionDefaults(mode, {}, fallbackAmplitude)
 }
 
-export function ampFallback(
-  element: ElementKind,
-  c: Pick<Config, "cellSize" | "length" | "size">,
-) {
+export function ampFallback(element: ElementKind, c: Pick<Config, "cellSize" | "length" | "size">) {
   if (element === "grid") return c.cellSize
   if (element === "bars") return c.length / 2
   return c.size * 0.9
@@ -315,7 +312,10 @@ function fmtValue(v: unknown): string {
   if (typeof v === "number") return `{${Math.round(v * 1000) / 1000}}`
   if (Array.isArray(v)) {
     const items = v
-      .map((s) => `{ color: "${(s as GradientStop).color}", position: ${(s as GradientStop).position} },`)
+      .map(
+        (s) =>
+          `{ color: "${(s as GradientStop).color}", position: ${(s as GradientStop).position} },`,
+      )
       .join("\n    ")
     return `{[\n    ${items}\n  ]}`
   }
@@ -419,7 +419,12 @@ export function recipeToConfig(recipe: Recipe): Config {
     if (p.count === undefined) c.count = 8
     if (p.radius === undefined) c.radius = Math.min(c.length, c.thickness) / 2
   }
-  if (element === "dots" && p.arrangement !== "loop" && p.radius === undefined && p.size !== undefined) {
+  if (
+    element === "dots" &&
+    p.arrangement !== "loop" &&
+    p.radius === undefined &&
+    p.size !== undefined
+  ) {
     c.radius = (p.size as number) / 2
   }
 

@@ -1,19 +1,13 @@
-import { useMemo, useState } from "react"
 import type { CSSProperties } from "react"
-import { PulseBars, PulseDots, PulseGrid, palettes, recipes } from "react-pulsor"
+import { useMemo, useState } from "react"
 import type { GradientStop, Recipe, RecipeName } from "react-pulsor"
+import { PulseBars, PulseDots, PulseGrid, palettes, recipes } from "react-pulsor"
 import type { ElementKind } from "./defaults"
-import { RECIPE_BLURBS, type Lang, type Strings } from "./i18n"
+import { type Lang, RECIPE_BLURBS, type Strings } from "./i18n"
 import { Reveal } from "./ui"
 
 /** Render a recipe; `periodScale` < 1 speeds the loop up (hover audition). */
-export function RecipeView({
-  recipe,
-  periodScale = 1,
-}: {
-  recipe: Recipe
-  periodScale?: number
-}) {
+export function RecipeView({ recipe, periodScale = 1 }: { recipe: Recipe; periodScale?: number }) {
   const period = Math.round((recipe.props.period ?? 900) * periodScale)
   switch (recipe.element) {
     case "grid":
@@ -74,6 +68,7 @@ export function Gallery({
       <div className="gallery-filters" role="tablist">
         {FILTERS.map((f) => (
           <button
+            type="button"
             key={f}
             role="tab"
             aria-selected={filter === f}
@@ -96,13 +91,16 @@ export function Gallery({
               onMouseLeave={() => setHovered((h) => (h === name ? null : h))}
             >
               <button
+                type="button"
                 className="card-stage aperture"
                 onClick={() => onLoad(name)}
                 aria-label={`Load ${recipe.title} into the playground`}
               >
                 <span
                   className="card-scale"
-                  style={RECIPE_SCALE[name] ? { transform: `scale(${RECIPE_SCALE[name]})` } : undefined}
+                  style={
+                    RECIPE_SCALE[name] ? { transform: `scale(${RECIPE_SCALE[name]})` } : undefined
+                  }
                 >
                   <RecipeView recipe={recipe} periodScale={hovered === name ? 0.55 : 1} />
                 </span>
@@ -111,7 +109,7 @@ export function Gallery({
               <div className="card-meta">
                 <span className="card-title">{recipe.title}</span>
                 <span className="card-blurb">
-                  {lang === "en" ? recipe.blurb : RECIPE_BLURBS[lang][name] ?? recipe.blurb}
+                  {lang === "en" ? recipe.blurb : (RECIPE_BLURBS[lang][name] ?? recipe.blurb)}
                 </span>
               </div>
             </article>

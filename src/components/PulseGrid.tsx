@@ -1,8 +1,15 @@
 import { useMemo } from "react"
 import { linearSliceColors, resolveColors } from "../core/color"
 import { stencilCells } from "../core/glyphs"
-import { CORE_KEYS, htmlAttrs, resolveCore, spread, useLoaderCore } from "../core/internal"
 import type { ResolvedCore } from "../core/internal"
+import {
+  ariaProps,
+  CORE_KEYS,
+  htmlAttrs,
+  resolveCore,
+  spread,
+  useLoaderCore,
+} from "../core/internal"
 import { gridPhases } from "../core/patterns"
 import type { GridPattern, PulseGridProps } from "../types"
 
@@ -86,8 +93,7 @@ export function PulseGrid(props: PulseGridProps) {
 
   return (
     <span
-      role="status"
-      aria-label={c.label}
+      {...ariaProps(c.label)}
       className={core.containerClass(props.className)}
       style={{
         display: "inline-grid",

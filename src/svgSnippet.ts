@@ -1,9 +1,14 @@
-import { barsColors, barsSegments, barsTransformOrigin, resolveBarsProps } from "./components/PulseBars"
+import {
+  barsColors,
+  barsSegments,
+  barsTransformOrigin,
+  resolveBarsProps,
+} from "./components/PulseBars"
 import { dotsColors, dotsPoints, resolveDotsProps } from "./components/PulseDots"
 import { gridColors, resolveGridProps } from "./components/PulseGrid"
 import { levelAt, resolveEnvelope } from "./core/engine"
-import { motionDefaults, resolveMotionInputs } from "./core/internal"
 import type { ResolvedCore } from "./core/internal"
+import { motionDefaults, resolveMotionInputs } from "./core/internal"
 import { gridPhases, linearPhases } from "./core/patterns"
 import type { SnippetElement, SnippetProps } from "./cssSnippet"
 import type { PulseBarsProps, PulseDotsProps, PulseGridProps } from "./types"
@@ -114,7 +119,7 @@ export function svgSnippet(
     const pitch = c.cellSize + c.gap
     boxW = c.cols * c.cellSize + (c.cols - 1) * c.gap
     boxH = c.rows * c.cellSize + (c.rows - 1) * c.gap
-    phases.forEach((phase, i) =>
+    phases.forEach((phase, i) => {
       items.push({
         x: (i % c.cols) * pitch,
         y: Math.floor(i / c.cols) * pitch,
@@ -123,8 +128,8 @@ export function svgSnippet(
         rx: c.radius,
         fill: colors[i],
         phase,
-      }),
-    )
+      })
+    })
   } else if (element === "bars") {
     const c = resolveBarsProps(props as PulseBarsProps)
     core = c
@@ -136,7 +141,7 @@ export function svgSnippet(
     if (c.glyph) {
       boxW = c.ringSize * c.aspect
       boxH = c.ringSize
-      segments.forEach((seg, i) =>
+      segments.forEach((seg, i) => {
         items.push({
           x: boxW / 2 + seg.cx - seg.w / 2,
           y: boxH / 2 + seg.cy - seg.h / 2,
@@ -145,8 +150,8 @@ export function svgSnippet(
           rx: c.radius,
           fill: colors[i],
           phase: phases[seg.stripe],
-        }),
-      )
+        })
+      })
     } else {
       const origin = barsTransformOrigin(c)
       const ox = origin === "left" ? 0 : origin === "right" ? 1 : 0.5
@@ -156,7 +161,7 @@ export function svgSnippet(
       const pitch = c.thickness + c.gap
       boxW = c.vertical ? c.count * pitch - c.gap : c.length
       boxH = c.vertical ? c.length : c.count * pitch - c.gap
-      phases.forEach((phase, i) =>
+      phases.forEach((phase, i) => {
         items.push({
           x: c.vertical ? i * pitch : 0,
           y: c.vertical ? 0 : i * pitch,
@@ -167,8 +172,8 @@ export function svgSnippet(
           phase,
           ox,
           oy,
-        }),
-      )
+        })
+      })
     }
   } else {
     const c = resolveDotsProps(props as PulseDotsProps)
@@ -182,7 +187,7 @@ export function svgSnippet(
       const pad = Math.max(c.length, c.thickness)
       boxW = c.ringSize * c.aspect + pad * 2
       boxH = c.ringSize + pad * 2
-      points.forEach((p, i) =>
+      points.forEach((p, i) => {
         items.push({
           x: boxW / 2 + p.x - c.length / 2,
           y: boxH / 2 + p.y - c.thickness / 2,
@@ -192,14 +197,14 @@ export function svgSnippet(
           fill: colors[i],
           phase: phases[i],
           baseRotate: ((c.align === "tangent" ? p.tangent : p.radial) * 180) / Math.PI,
-        }),
-      )
+        })
+      })
     } else {
       fallbackAmp = c.size * 0.9
       const pitch = c.size + c.gap
       boxW = c.count * pitch - c.gap
       boxH = c.size
-      phases.forEach((phase, i) =>
+      phases.forEach((phase, i) => {
         items.push({
           x: i * pitch,
           y: 0,
@@ -208,8 +213,8 @@ export function svgSnippet(
           rx: c.radius,
           fill: colors[i],
           phase,
-        }),
-      )
+        })
+      })
     }
   }
 

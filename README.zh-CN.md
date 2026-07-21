@@ -2,6 +2,10 @@
 
 [English](https://github.com/syoooo/react-pulsor/blob/main/README.md) · **简体中文** · [日本語](https://github.com/syoooo/react-pulsor/blob/main/README.ja.md)
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/syoooo/react-pulsor/main/docs/hero.svg" alt="Pulsor loaders" width="320" />
+</p>
+
 **在线 Demo → [react-pulsor.vercel.app](https://react-pulsor.vercel.app)**
 
 可自由组合的 React 加载指示器。网格、长条与圆点，可排成线，也可绕成环，由**相位场**、**运动包络**和 **OKLab 渐变**驱动——动画只有一条走合成器的 keyframe，零依赖，无需引入任何 CSS。

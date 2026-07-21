@@ -1,6 +1,6 @@
 import { applyPalette, GIFEncoder, quantize } from "gifenc"
-import { svgSnippet } from "react-pulsor"
 import type { SnippetElement, SnippetProps } from "react-pulsor"
+import { svgSnippet } from "react-pulsor"
 
 /**
  * Render one loop of the loader to an animated GIF over a solid stage

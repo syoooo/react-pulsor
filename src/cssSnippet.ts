@@ -1,9 +1,14 @@
-import { barsColors, barsSegments, barsTransformOrigin, resolveBarsProps } from "./components/PulseBars"
+import {
+  barsColors,
+  barsSegments,
+  barsTransformOrigin,
+  resolveBarsProps,
+} from "./components/PulseBars"
 import { dotsColors, dotsPoints, resolveDotsProps } from "./components/PulseDots"
 import { gridColors, resolveGridProps } from "./components/PulseGrid"
 import { compileAnimation, resolveEasingPair, resolveEnvelope } from "./core/engine"
-import { motionDefaults, resolveMotionInputs } from "./core/internal"
 import type { ResolvedCore } from "./core/internal"
+import { motionDefaults, resolveMotionInputs } from "./core/internal"
 import { gridPhases, linearPhases } from "./core/patterns"
 import type { PulseBarsProps, PulseDotsProps, PulseGridProps } from "./types"
 

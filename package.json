@@ -25,7 +25,12 @@
     "typecheck": "tsc --noEmit",
     "site": "npm --workspace site run dev",
     "site:build": "npm --workspace site run build",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "lint": "biome check .",
+    "format": "biome check --write .",
+    "test": "vitest run",
+    "preversion": "npm run lint && npm run typecheck && npm test",
+    "postversion": "git push --follow-tags"
   },
   "workspaces": [
     "site"
@@ -50,10 +55,12 @@
     "react": ">=18"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.5.5",
     "@types/react": "^19.0.0",
     "react": "^19.0.0",
     "tsup": "^8.3.0",
-    "typescript": "^5.5.0"
+    "typescript": "^5.5.0",
+    "vitest": "^4.1.10"
   },
   "repository": {
     "type": "git",

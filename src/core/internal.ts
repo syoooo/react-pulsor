@@ -1,15 +1,5 @@
-import { useMemo } from "react"
 import type { CSSProperties } from "react"
-import {
-  APPEAR_CSS,
-  APPEAR_ID,
-  compileAnimation,
-  resolveEasingPair,
-  resolveEnvelope,
-  STATE_CSS,
-  STATE_ID,
-  useInjectStyles,
-} from "./engine"
+import { useMemo } from "react"
 import type {
   AnimateMode,
   ColorBy,
@@ -20,6 +10,16 @@ import type {
   LoaderState,
   PaletteInput,
 } from "../types"
+import {
+  APPEAR_CSS,
+  APPEAR_ID,
+  compileAnimation,
+  resolveEasingPair,
+  resolveEnvelope,
+  STATE_CSS,
+  STATE_ID,
+  useInjectStyles,
+} from "./engine"
 
 /** Per-mode resting defaults, applied when the caller doesn't pin them. */
 export function motionDefaults(
@@ -27,9 +27,7 @@ export function motionDefaults(
   props: Pick<CoreProps, "dim" | "restScale" | "amplitude">,
   fallbackAmplitude: number,
 ): { dim: number; restScale: number; amplitude: number } {
-  const dim =
-    props.dim ??
-    (mode === "fade" ? 0.12 : mode === "fade-scale" ? 0.25 : 1)
+  const dim = props.dim ?? (mode === "fade" ? 0.12 : mode === "fade-scale" ? 0.25 : 1)
   const restScale =
     props.restScale ??
     (mode === "scale" ? 0.45 : mode === "fade-scale" ? 0.6 : mode === "stretch" ? 0.3 : 1)
@@ -138,6 +136,14 @@ export function useMotion(config: MotionConfig): Motion {
       animationDelay: `${Math.round(-phase * period)}ms`,
     }),
   }
+}
+
+/**
+ * Live-region semantics for a labeled loader; an empty label marks the
+ * figure as decorative instead of announcing an anonymous "status".
+ */
+export function ariaProps(label: string): Record<string, unknown> {
+  return label ? { role: "status", "aria-label": label } : { "aria-hidden": true }
 }
 
 /** Spatial color-sampling positions: 0..1 across `count` slots. */

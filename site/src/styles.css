@@ -26,8 +26,8 @@
   --radius-sm: 1px;
   --font-pixel: "Silkscreen", "IBM Plex Mono", monospace;
   --font-display: "IBM Plex Mono", ui-monospace, "PingFang SC", "Hiragino Sans", monospace;
-  --font-body: "IBM Plex Sans", -apple-system, "PingFang SC", "Hiragino Sans", "Noto Sans CJK SC",
-    sans-serif;
+  --font-body:
+    "IBM Plex Sans", -apple-system, "PingFang SC", "Hiragino Sans", "Noto Sans CJK SC", sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
   /* structural dividers go hairline on high-density displays */
   --hairline: 1px;
@@ -215,7 +215,9 @@ html:lang(ja) .card-blurb {
   color: var(--muted);
   padding: 3px 8px;
   border-right: 1px solid var(--ink);
-  transition: color 0.15s, background 0.15s;
+  transition:
+    color 0.15s,
+    background 0.15s;
 }
 
 .lang-btn:last-child {
@@ -323,7 +325,10 @@ html:lang(ja) .card-blurb {
   background: var(--panel-2);
   border: 1px solid var(--border);
   padding: 5px 12px;
-  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  transition:
+    color 0.15s,
+    border-color 0.15s,
+    background 0.15s;
 }
 
 .install button:hover,
@@ -597,7 +602,9 @@ html:lang(ja) .card-blurb {
   padding: 0 0 1px;
   outline: none;
   cursor: text;
-  transition: color 0.15s, border-color 0.15s;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
 }
 
 .ctl-value:hover {
@@ -648,7 +655,7 @@ html:lang(ja) .card-blurb {
   appearance: none;
   background:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%23605c50'/%3E%3C/svg%3E")
-      no-repeat right 10px center,
+    no-repeat right 10px center,
     var(--panel);
   color: var(--text);
   border: 1px solid var(--border);
@@ -768,7 +775,9 @@ input[type="range"]::-moz-range-thumb {
   font-family: var(--mono);
   color: var(--muted);
   padding: 2px 9px;
-  transition: color 0.15s, background 0.15s;
+  transition:
+    color 0.15s,
+    background 0.15s;
 }
 
 .seg-btn:hover {
@@ -792,7 +801,10 @@ input[type="range"]::-moz-range-thumb {
   width: 34px;
   height: 22px;
   border: 1px solid var(--border);
-  transition: transform 0.12s, border-color 0.15s, box-shadow 0.15s;
+  transition:
+    transform 0.12s,
+    border-color 0.15s,
+    box-shadow 0.15s;
 }
 
 .swatch:hover {
@@ -811,7 +823,9 @@ input[type="range"]::-moz-range-thumb {
   color: var(--muted);
   border: 1px dashed var(--border);
   padding: 4px 10px;
-  transition: color 0.15s, border-color 0.15s;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
 }
 
 .custom-toggle:hover,
@@ -933,7 +947,10 @@ button.icon-btn {
   background: var(--panel-2);
   border: 1px solid var(--border);
   cursor: pointer;
-  transition: color 0.15s, background 0.15s, border-color 0.15s;
+  transition:
+    color 0.15s,
+    background 0.15s,
+    border-color 0.15s;
 }
 
 .icon-btn:hover {
@@ -956,7 +973,10 @@ button.label-btn {
   background: var(--panel-2);
   border: 1px solid var(--border);
   cursor: pointer;
-  transition: color 0.15s, background 0.15s, border-color 0.15s;
+  transition:
+    color 0.15s,
+    background 0.15s,
+    border-color 0.15s;
 }
 
 .label-btn:hover,
@@ -965,7 +985,6 @@ button.label-btn:hover {
   background: var(--ink);
   border-color: var(--ink);
 }
-
 
 .codeblock pre {
   margin: 0;
@@ -1033,7 +1052,10 @@ button.label-btn:hover {
   background: var(--panel);
   border: 1px solid var(--border);
   padding: 4px 12px;
-  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  transition:
+    color 0.15s,
+    border-color 0.15s,
+    background 0.15s;
 }
 
 .chip:hover {
@@ -1073,7 +1095,10 @@ button.label-btn:hover {
   border: 1px solid var(--border);
   padding: 10px 10px 12px;
   gap: 10px;
-  transition: border-color 0.15s, transform 0.12s, box-shadow 0.15s;
+  transition:
+    border-color 0.15s,
+    transform 0.12s,
+    box-shadow 0.15s;
 }
 
 .card:hover {
@@ -1122,7 +1147,6 @@ button.label-btn:hover {
   position: relative;
 }
 
-
 .card-cta {
   position: absolute;
   bottom: 8px;
@@ -1137,7 +1161,9 @@ button.label-btn:hover {
   padding: 3px 10px;
   white-space: nowrap;
   opacity: 0;
-  transition: opacity 0.2s, transform 0.2s;
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
   pointer-events: none;
 }
 
@@ -1153,7 +1179,6 @@ button.label-btn:hover {
   padding: 0 1px;
 }
 
-
 .card-title {
   font-family: var(--font-pixel);
   font-size: 11px;
@@ -1161,7 +1186,6 @@ button.label-btn:hover {
   text-transform: uppercase;
   text-align: left;
 }
-
 
 .card-blurb {
   font-size: 12.5px;
@@ -1175,7 +1199,9 @@ button.label-btn:hover {
 .reveal {
   opacity: 0;
   transform: translateY(12px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
 }
 
 .reveal.in {

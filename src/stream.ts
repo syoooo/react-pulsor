@@ -9,9 +9,10 @@ import { useCallback, useEffect, useRef, useState } from "react"
  *   stream.on("token", ping)
  *   <PulseBars intensity={intensity} />
  */
-export function useStreamIntensity(
-  options: { decay?: number; floor?: number } = {},
-): { intensity: number; ping: () => void } {
+export function useStreamIntensity(options: { decay?: number; floor?: number } = {}): {
+  intensity: number
+  ping: () => void
+} {
   const { decay = 900, floor = 0.35 } = options
   const [intensity, setIntensity] = useState(floor)
   const timer = useRef<number | undefined>(undefined)
