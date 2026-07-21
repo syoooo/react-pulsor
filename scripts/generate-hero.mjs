@@ -8,7 +8,7 @@ import { createRequire } from "node:module"
 const require = createRequire(import.meta.url)
 const { cssSnippet, recipes } = require("../dist/index.cjs")
 
-const PICKS = ["galaxy", "equalizer", "sunburst"] // grid · bars · dots-loop
+const PICKS = ["ascent", "kelp", "glyph", "typing", "monogram"] // the specimen rack
 const GAP = 46
 
 function parseSnippet(element, props) {
@@ -21,6 +21,8 @@ function parseSnippet(element, props) {
   const cellRule = layout.match(/\.pulsor \.c\{([^}]*)\}/)[1]
   const radius = Number(cellRule.match(/border-radius:([\d.]+)px/)[1])
   const animDecl = cellRule.match(/animation:[^;]+/)[0]
+  // sway bars pivot at an edge — carry the origin through, per group
+  const origin = cellRule.match(/transform-origin:([a-z]+)/)?.[1]
 
   const cells = []
   if (box) {
@@ -38,7 +40,7 @@ function parseSnippet(element, props) {
         cells.push({ x: +x, y: +y, w: +w, h: +h, deg: 0, fill, delay })
       }
     }
-    return { w: +box[1], h: +box[2], anim, animDecl, radius, cells }
+    return { w: +box[1], h: +box[2], anim, animDecl, origin, radius, cells }
   }
 
   // flow layouts (grid / line): reconstruct coordinates from the rule
@@ -66,6 +68,7 @@ function parseSnippet(element, props) {
       h: rows * ch + (rows - 1) * gap,
       anim,
       animDecl,
+      origin,
       radius,
       cells,
     }
@@ -74,7 +77,7 @@ function parseSnippet(element, props) {
   flow.forEach(([, fill, delay], i) => {
     cells.push({ x: i * (cw + gap), y: 0, w: cw, h: ch, deg: 0, fill, delay })
   })
-  return { w: flow.length * (cw + gap) - gap, h: ch, anim, animDecl, radius, cells }
+  return { w: flow.length * (cw + gap) - gap, h: ch, anim, animDecl, origin, radius, cells }
 }
 
 const parts = PICKS.map((name) => parseSnippet(recipes[name].element, recipes[name].props))
@@ -85,7 +88,7 @@ let x = 4
 const groups = []
 const styles = []
 for (const [i, p] of parts.entries()) {
-  styles.push(p.anim, `.g${i} .c{${p.animDecl}}`)
+  styles.push(p.anim, `.g${i} .c{${p.animDecl}${p.origin ? `;transform-origin:${p.origin}` : ""}}`)
   const rects = p.cells
     .map((c) => {
       const rect = `<rect class="c" x="${c.deg ? -c.w / 2 : c.x}" y="${c.deg ? -c.h / 2 : c.y}" width="${c.w}" height="${c.h}" rx="${p.radius}" fill="${c.fill}" style="animation-delay:${c.delay}ms"/>`

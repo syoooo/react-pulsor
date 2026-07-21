@@ -2,9 +2,7 @@
 
 **English** · [简体中文](https://github.com/syoooo/react-pulsor/blob/main/README.zh-CN.md) · [日本語](https://github.com/syoooo/react-pulsor/blob/main/README.ja.md)
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/syoooo/react-pulsor/main/docs/hero.svg" alt="Pulsor loaders" width="320" />
-</p>
+<img src="https://raw.githubusercontent.com/syoooo/react-pulsor/main/docs/hero.svg" alt="Pulsor loaders" width="420" />
 
 [![npm](https://img.shields.io/npm/v/react-pulsor)](https://www.npmjs.com/package/react-pulsor) [![license](https://img.shields.io/npm/l/react-pulsor)](./LICENSE) [![CI](https://github.com/syoooo/react-pulsor/actions/workflows/ci.yml/badge.svg)](https://github.com/syoooo/react-pulsor/actions/workflows/ci.yml)
 
