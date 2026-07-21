@@ -2,7 +2,7 @@
 
 [English](https://github.com/syoooo/react-pulsor/blob/main/README.md) · [简体中文](https://github.com/syoooo/react-pulsor/blob/main/README.zh-CN.md) · **日本語**
 
-<img src="https://raw.githubusercontent.com/syoooo/react-pulsor/main/docs/hero.svg" alt="Pulsor loaders" width="420" />
+<img src="https://raw.githubusercontent.com/syoooo/react-pulsor/main/docs/hero.svg?v=2" alt="Pulsor loaders" width="420" />
 
 **デモ → [react-pulsor.vercel.app](https://react-pulsor.vercel.app)**
 
