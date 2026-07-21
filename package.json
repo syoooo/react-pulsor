@@ -1,6 +1,6 @@
 {
   "name": "react-pulsor",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Composable React loading indicators — grids, bars and dots driven by phase fields, motion envelopes and OKLab gradients. Zero dependencies, compositor-only animation.",
   "type": "module",
   "sideEffects": false,

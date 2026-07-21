@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.1
+
+Removes an accidental self-dependency (`react-pulsor` depending on
+`react-pulsor@^0.1.0`) that shipped in 0.2.0's package metadata.
+
 ## 0.2.0
 
 **Breaking:** `PulseRing` merges into `PulseDots` as `arrangement="loop"` —
