@@ -58,7 +58,14 @@ export function gridColors(c: ResolvedGrid, phases: number[]): string[] {
   )
 }
 
-/** A rows × cols matrix of cells swept by the chosen phase field. */
+/**
+ * A rows × cols matrix of cells swept by the chosen phase field.
+ *
+ * @example
+ * <PulseGrid />
+ * <PulseGrid pattern="spiral" palette="ember" feel="calm" />
+ * <PulseGrid rows={5} cols={5} pattern="ripple" waves={2} />
+ */
 export function PulseGrid(props: PulseGridProps) {
   const c = resolveGridProps(props)
 

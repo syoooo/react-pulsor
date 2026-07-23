@@ -8,6 +8,7 @@ import {
   resolveCore,
   spread,
   useLoaderCore,
+  warnIgnoredProps,
 } from "../core/internal"
 import type { RingPoint } from "../core/path"
 import { superellipsePoints } from "../core/path"
@@ -46,6 +47,10 @@ export interface ResolvedDots extends ResolvedCore {
 }
 
 export function resolveDotsProps(p: PulseDotsProps): ResolvedDots {
+  warnIgnoredProps("PulseDots", p, {
+    loop: ["ringSize", "aspect", "squareness", "align", "length", "thickness"],
+    line: ["size", "gap"],
+  })
   const loop = (p.arrangement ?? "line") === "loop"
   const size = p.size ?? 7
   const length = p.length ?? 6
@@ -110,6 +115,11 @@ const round = (v: number) => Math.round(v * 100) / 100
  * equals `thickness`, ticks when elongated. On a loop, `align` chooses
  * between tracing the outline (tangent, a dashed O) and pointing at the
  * center (radial, clock ticks).
+ *
+ * @example
+ * <PulseDots />
+ * <PulseDots animate="bounce" easing="spring" />
+ * <PulseDots arrangement="loop" count={12} length={9} thickness={4} align="radial" />
  */
 export function PulseDots(props: PulseDotsProps) {
   const c = resolveDotsProps(props)

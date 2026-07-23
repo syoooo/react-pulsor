@@ -8,6 +8,7 @@ import {
   resolveCore,
   spread,
   useLoaderCore,
+  warnIgnoredProps,
 } from "../core/internal"
 import type { StripeSegment } from "../core/path"
 import { stripedO } from "../core/path"
@@ -48,6 +49,10 @@ export interface ResolvedBars extends ResolvedCore {
 }
 
 export function resolveBarsProps(p: PulseBarsProps): ResolvedBars {
+  warnIgnoredProps("PulseBars", p, {
+    loop: ["ringSize", "aspect", "squareness", "stroke"],
+    line: ["length", "gap", "origin"],
+  })
   const glyph = (p.arrangement ?? "line") === "loop"
   const ringSize = p.ringSize ?? 28
   return {
@@ -123,6 +128,11 @@ const round = (v: number) => Math.round(v * 100) / 100
  * Bars in a line (equalizer, drafting strip) or stacked into a striped
  * closed loop — parallel pills traced along a superellipse outline whose
  * aspect, squareness and stroke depth are all tunable.
+ *
+ * @example
+ * <PulseBars />
+ * <PulseBars count={7} animate="stretch" feel="lively" />
+ * <PulseBars arrangement="loop" ringSize={32} squareness={4} />
  */
 export function PulseBars(props: PulseBarsProps) {
   const c = resolveBarsProps(props)

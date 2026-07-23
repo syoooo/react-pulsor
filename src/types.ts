@@ -2,7 +2,9 @@ import type { HTMLAttributes } from "react"
 
 /** A color stop along a gradient. `position` is 0..1. */
 export interface GradientStop {
+  /** Any CSS color. */
   color: string
+  /** Position along the gradient, 0..1. */
   position: number
 }
 
@@ -159,7 +161,9 @@ export type GridPattern =
 export interface PulseGridProps extends CoreProps, HTMLAttributes<HTMLSpanElement> {
   /** Phase field over the grid. Default `"ripple"`. */
   pattern?: GridPattern
+  /** Grid rows. Default `4`. */
   rows?: number
+  /** Grid columns. Default `4`. */
   cols?: number
   /** Cell edge length in px. Default `6`. */
   cellSize?: number

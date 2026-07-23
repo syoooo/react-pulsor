@@ -2,10 +2,13 @@ import type { PulseBarsProps, PulseDotsProps, PulseGridProps } from "./types"
 
 /**
  * Curated, ready-to-use configurations. Each recipe is just props — spread
- * it onto the matching component:
+ * it onto the component matching its `element` ("grid" → PulseGrid,
+ * "bars" → PulseBars, "dots" → PulseDots).
  *
- *   const r = recipes.sonar
- *   <PulseGrid {...r.props} />
+ * @example
+ * <PulseGrid {...recipes.sonar.props} />
+ * <PulseDots {...recipes.typing.props} />
+ * <PulseDots {...recipes.orbit.props} period={600} />
  */
 
 export type Recipe =

@@ -146,6 +146,34 @@ export function ariaProps(label: string): Record<string, unknown> {
   return label ? { role: "status", "aria-label": label } : { "aria-hidden": true }
 }
 
+declare const process: { env: Record<string, string | undefined> } | undefined
+
+const warnedMismatch = new Set<string>()
+
+/**
+ * Dev-only. The line/loop split can't live in the prop types (a discriminated
+ * union would break spreading `recipes.x.props`), so mismatches fail silently
+ * at the type level — point them out where an agent or human will see them.
+ */
+export function warnIgnoredProps(
+  component: string,
+  props: object,
+  only: { loop: readonly string[]; line: readonly string[] },
+): void {
+  if (typeof process === "undefined" || process.env.NODE_ENV === "production") return
+  const p = props as Record<string, unknown>
+  const loop = p.arrangement === "loop"
+  const ignored = (loop ? only.line : only.loop).filter((k) => p[k] !== undefined)
+  if (ignored.length === 0) return
+  const current = loop ? '"loop"' : p.arrangement === undefined ? '"line" (the default)' : '"line"'
+  const msg =
+    `react-pulsor: <${component}> ${ignored.join(", ")} take${ignored.length === 1 ? "s" : ""} ` +
+    `effect only with arrangement="${loop ? "line" : "loop"}" — ignored while arrangement is ${current}.`
+  if (warnedMismatch.has(msg)) return
+  warnedMismatch.add(msg)
+  console.warn(msg)
+}
+
 /** Spatial color-sampling positions: 0..1 across `count` slots. */
 export function spread(count: number): number[] {
   if (count <= 1) return [0.5]

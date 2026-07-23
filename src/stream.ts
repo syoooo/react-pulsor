@@ -5,9 +5,10 @@ import { useCallback, useEffect, useRef, useState } from "react"
  * Call `ping()` on every chunk: intensity jumps to 1 and falls back to
  * `floor` after `decay` ms of silence — the loader breathes with the stream.
  *
- *   const { intensity, ping } = useStreamIntensity()
- *   stream.on("token", ping)
- *   <PulseBars intensity={intensity} />
+ * @example
+ * const { intensity, ping } = useStreamIntensity({ decay: 900, floor: 0.35 })
+ * stream.on("token", ping)
+ * return <PulseBars intensity={intensity} />
  */
 export function useStreamIntensity(options: { decay?: number; floor?: number } = {}): {
   intensity: number
