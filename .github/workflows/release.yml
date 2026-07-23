@@ -1,7 +1,8 @@
 name: Release
 
-# Publishes to npm with provenance when a v* tag is pushed.
-# Requires an npm automation token stored as the NPM_TOKEN repo secret.
+# Publishes to npm when a v* tag is pushed, via trusted publishing (OIDC):
+# npmjs.com → react-pulsor → Settings → Trusted Publisher must point at
+# this repo + workflow file. No token; provenance is attached automatically.
 on:
   push:
     tags: ["v*"]
@@ -19,8 +20,8 @@ jobs:
           node-version: 22
           cache: npm
           registry-url: https://registry.npmjs.org
+      # trusted publishing needs npm >= 11.5.1; Node 22 bundles npm 10
+      - run: npm install -g npm@latest
       - run: npm ci
       - run: npm run typecheck
-      - run: npm publish --access public --provenance
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: npm publish --access public
