@@ -49,7 +49,13 @@
     "equalizer",
     "dots",
     "grid",
-    "css-animation"
+    "css-animation",
+    "react-spinner",
+    "react-loader",
+    "loading-indicator",
+    "loading-animation",
+    "progress",
+    "typing-indicator"
   ],
   "license": "MIT",
   "author": "syo",
