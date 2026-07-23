@@ -14,5 +14,6 @@
       "react-pulsor": ["../src/index.ts"]
     }
   },
-  "include": ["src", "../src", "vite.config.ts"]
+  "include": ["src", "../src", "vite.config.ts"],
+  "exclude": ["../src/**/*.test.ts"]
 }
