@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.2.2
+
+Docs and guardrails for coding agents — no API changes.
+
+- `@example` blocks on `PulseGrid` / `PulseBars` / `PulseDots`, `recipes`
+  and `useStreamIntensity`, carried into `dist/index.d.ts` for editor
+  hovers; missing doc comments on `rows` / `cols` and `GradientStop` filled.
+- Dev-only console warning when loop-only props are passed with
+  `arrangement="line"` (or line-only props on a loop) — the one mismatch
+  the types can't catch. Stripped from production builds.
+- `AGENTS.md` cheatsheet ships in the package; machine-readable docs at
+  [/llms.txt](https://react-pulsor.vercel.app/llms.txt) and
+  [/llms-full.txt](https://react-pulsor.vercel.app/llms-full.txt); READMEs
+  gain generated recipe tables in all three languages.
+
 ## 0.2.1
 
 Removes an accidental self-dependency (`react-pulsor` depending on
