@@ -206,7 +206,37 @@ const { intensity, ping } = useStreamIntensity({ decay: 900, floor: 0.35 })
 
 ## レシピ
 
-厳選した構成を `recipes` として同梱しています。定番（`typing`、`equalizer`、`orbit`、`beacon`、`metronome`）から、シグネチャー（`monogram`、`glyph`、`heartbeat`、`sonar`、`galaxy`、`comet`、`sunburst`、`kelp`、`louver`）、そして一癖あるもの（`static`、`drizzle`、`stadium`、`manuscript`、`ticker`、`ascent`、`breather`）まで。各レシピは `{ element, title, blurb, props }` で、props を対応するコンポーネントに展開するだけ。デモサイトのギャラリーはこの export をそのまま描画しています。
+厳選した構成を `recipes` として同梱しています。各レシピは `{ element, title, blurb, props }` で、props を対応するコンポーネントに展開するだけ。デモサイトのギャラリーはこの export をそのまま描画しています。
+
+<!-- recipes-table:start -->
+| レシピ | コンポーネント | 説明 |
+| --- | --- | --- |
+| `sonar` | `<PulseGrid />` | 四角い波紋が中心から広がる。遅く、ガラスのように。 |
+| `typing` | `<PulseDots />` | おなじみの三点バウンス。揺れではなく、跳ねと呼べるところまで調律した。 |
+| `comet` | `<PulseDots />` | 明るい頭、長く引く尾。軌跡を描くのは位相カラーリング。 |
+| `equalizer` | `<PulseBars />` | 波が通るたび、バーが息を吸う。オーディオメーターの躍動。 |
+| `galaxy` | `<PulseGrid />` | 中心から渦を巻いて、波が出ていく。螺旋の位相場。 |
+| `static` | `<PulseGrid />` | シード乱数にストロボを重ねた、チャンネルの狭間のテレビノイズ。 |
+| `glyph` | `<PulseDots />` | 破線で描いたひとつの輪。aspectとsquarenessを、ロゴの字面に合わせて。 |
+| `monogram` | `<PulseBars />` | ストライプを積んで組んだバッジ。strokeとsquarenessは、お好みの字面に合わせて。 |
+| `heartbeat` | `<PulseDots />` | 一粒のドット、二拍のエンベロープ。ドクン、ドクン。 |
+| `ticker` | `<PulseGrid />` | 低く長いセルの帯を、波が左から右へ。電光掲示板の足取りで。 |
+| `stadium` | `<PulseDots />` | 角の丸い四角、スクワークルのトラック。波がラップを刻む。 |
+| `kelp` | `<PulseBars />` | バーが根元からしなる。波が通れば、草原を渡る風。 |
+| `sunburst` | `<PulseDots />` | 放射状の目盛りが、順に閃いて一周。熱を帯びた文字盤。 |
+| `drizzle` | `<PulseGrid />` | セルがランダムに伸びては消える。窓ガラスを伝う雨だれ。 |
+| `metronome` | `<PulseDots />` | 二つの点が、かちりと入れ替わる。ミニマルで、機械的。 |
+| `breather` | `<PulseGrid />` | ブロック全体が、いっせいに息を吸う。忙しなさではなく、静かな待機。 |
+| `manuscript` | `<PulseBars />` | 行が左マージンから伸びていく。書きかけの原稿のように。 |
+| `ascent` | `<PulseGrid />` | 幅広の山形が、一段ずつ登っていく。方向を持った律動。 |
+| `louver` | `<PulseBars />` | スラットが自分の軸でくるりと返る。すきま風に鳴るブラインド。 |
+| `orbit` | `<PulseDots />` | ドットの輪を、波がいつまでも周回する。骨格はスピナー、身体はグラデーション。 |
+| `beacon` | `<PulseDots />` | 小さな灯が、輪を速く巡る。見慣れたかたち、生きた色。 |
+<!-- recipes-table:end -->
+
+## AI アシスタント向け
+
+機械可読ドキュメントは [react-pulsor.vercel.app/llms.txt](https://react-pulsor.vercel.app/llms.txt)（インデックス）と [/llms-full.txt](https://react-pulsor.vercel.app/llms-full.txt)（全レシピを JSX 展開した完全リファレンス）にあります。npm パッケージには `AGENTS.md` のチートシートも同梱しています。
 
 ## 開発
 

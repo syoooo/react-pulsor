@@ -1,0 +1,19 @@
+# react-pulsor
+
+> Composable React loading indicators — grids, bars and dots driven by phase fields, motion envelopes and OKLab gradients. Zero dependencies, compositor-only animation.
+
+Key facts:
+
+- Zero dependencies. The animation is one compositor-only CSS keyframe (opacity/transform) that components inject themselves — no CSS import, no provider.
+- Three components: `<PulseGrid>` (rows × cols matrix), `<PulseBars>` (line or striped loop), `<PulseDots>` (line or loop). Bars and dots take `arrangement="line" | "loop"`.
+- 21 curated configurations ship as the `recipes` export; spread `recipes.x.props` onto the component matching `recipes.x.element`.
+- `cssSnippet()` / `svgSnippet()` emit standalone, framework-free CSS or SVG for any config.
+- `useStreamIntensity()` drives a loader's `intensity` from an AI token stream.
+- Extras: `state` (success/error endings), `progress` (determinate fill), `feel` (motion personality macro), reduced-motion respected by default.
+
+## Docs
+
+- [Full reference](https://react-pulsor.vercel.app/llms-full.txt): complete README, guidance for agents, and every recipe expanded to JSX
+- [README](https://github.com/syoooo/react-pulsor/blob/main/README.md)
+- [npm](https://www.npmjs.com/package/react-pulsor)
+- [Live playground](https://react-pulsor.vercel.app)

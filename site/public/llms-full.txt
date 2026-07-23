@@ -1,11 +1,5 @@
 # react-pulsor
 
-**English** · [简体中文](https://github.com/syoooo/react-pulsor/blob/main/README.zh-CN.md) · [日本語](https://github.com/syoooo/react-pulsor/blob/main/README.ja.md)
-
-<img src="https://raw.githubusercontent.com/syoooo/react-pulsor/main/docs/hero.svg?v=2" alt="Pulsor loaders" width="420" />
-
-[![npm](https://img.shields.io/npm/v/react-pulsor)](https://www.npmjs.com/package/react-pulsor) [![license](https://img.shields.io/npm/l/react-pulsor)](./LICENSE) [![CI](https://github.com/syoooo/react-pulsor/actions/workflows/ci.yml/badge.svg)](https://github.com/syoooo/react-pulsor/actions/workflows/ci.yml)
-
 **Live demo → [react-pulsor.vercel.app](https://react-pulsor.vercel.app)**
 
 Composable React loading indicators. Grids, bars and dots — in lines or
@@ -276,7 +270,6 @@ A curated set of configurations ships as `recipes`. Each is
 `{ element, title, blurb, props }`; spread the props onto the matching
 component. The demo site's gallery is rendered straight from this export.
 
-<!-- recipes-table:start -->
 | Recipe | Component | Description |
 | --- | --- | --- |
 | `sonar` | `<PulseGrid />` | Square rings expanding from the center, slow and glassy. |
@@ -300,16 +293,6 @@ component. The demo site's gallery is rendered straight from this export.
 | `louver` | `<PulseBars />` | Flat slats flipping around their own axis — venetian blinds in a draft. |
 | `orbit` | `<PulseDots />` | A ring of dots the wave keeps lapping — spinner DNA, gradient body. |
 | `beacon` | `<PulseDots />` | Twelve small lights flashing fast around a tight ring — familiar shape, live color. |
-<!-- recipes-table:end -->
-
-## For AI assistants
-
-Machine-readable docs live at
-[react-pulsor.vercel.app/llms.txt](https://react-pulsor.vercel.app/llms.txt)
-(index) and
-[/llms-full.txt](https://react-pulsor.vercel.app/llms-full.txt)
-(full reference with every recipe expanded to JSX). The npm package also
-ships an `AGENTS.md` cheatsheet next to this README.
 
 ## Development
 
@@ -323,3 +306,202 @@ npm run typecheck
 ## License
 
 MIT
+
+
+---
+
+## Guidance for coding agents
+
+Mental model — every loader is four orthogonal dials:
+
+1. **Geometry** — which component and its layout props (grid `rows`/`cols`, bars/dots `count` and `arrangement`).
+2. **Pattern** — the phase field: who fires when (`pattern`, `waves`, `seed`).
+3. **Envelope** — what one beat looks like (`animate`, `envelope`, `easing`, `period`, or the `feel` macro that sets all three).
+4. **Color** — `palette` (preset name, any CSS color, or gradient stops) plus `colorBy` / `gradientAngle`.
+
+Decision guide:
+
+- "a spinner" → `<PulseDots arrangement="loop" />`, or `recipes.orbit` / `recipes.beacon`.
+- "typing indicator" → `recipes.typing`.
+- "determinate progress" → any component with `progress={0..1}`.
+- "loader that reacts to an AI token stream" → `useStreamIntensity()` feeding the `intensity` prop.
+- "match my brand" → `palette` takes any CSS color or `[{ color, position }]` stops; `colorBy="linear"` lays one gradient across the whole figure.
+- success/failure endings → `state="success"` / `state="error"`.
+
+Common mistakes:
+
+- `arrangement` defaults to `"line"`. Loop-only props (`ringSize`, `aspect`, `squareness`, `stroke`, `align`, and `length`/`thickness` on PulseDots) are silently ignored on a line — set `arrangement="loop"` first.
+- Line-only props (`size`, `gap`, and `length`/`origin` on PulseBars) are ignored on a loop.
+- `dim`, `restScale`, `progress` and `intensity` are all 0..1.
+- No CSS import and no provider: components inject their one keyframe themselves.
+- Spread a recipe onto the component matching its `element`: `recipes.typing.element` is `"dots"`, so `<PulseDots {...recipes.typing.props} />`.
+
+## Recipe catalog (ready-to-paste JSX)
+
+### sonar — Sonar
+
+Square rings expanding from the center, slow and glassy.
+
+```jsx
+<PulseGrid rows={5} cols={5} cellSize={7} gap={4} radius={2} pattern="ripple" animate="fade" easing="drift" palette="glacier" period={1600} waves={2} />
+```
+
+### typing — Typing
+
+The classic three-dot bounce, tuned so the arc reads as a hop, not a wobble.
+
+```jsx
+<PulseDots count={3} size={7} gap={4} animate="bounce" pattern="wave" envelope={{ attack: 0.18, hold: 0, release: 0.3 }} easing="spring" period={800} />
+```
+
+### comet — Comet
+
+One bright head and a long gradient tail — phase coloring does the trailing.
+
+```jsx
+<PulseDots arrangement="loop" count={14} length={5} thickness={5} ringSize={30} animate="fade-scale" pattern="wave" envelope={{ attack: 0.02, hold: 0.05, release: 0.6 }} colorBy="phase" palette="sherbet" period={1200} dim={0.06} restScale={0.4} />
+```
+
+### equalizer — Equalizer
+
+Upright bars breathing through a travelling wave — audio-meter energy.
+
+```jsx
+<PulseBars count={7} thickness={4} length={24} animate="stretch" pattern="wave" envelope="breathe" palette="lagoon" period={1000} waves={1.5} />
+```
+
+### galaxy — Galaxy
+
+A spiral phase field — the wave coils out from the center.
+
+```jsx
+<PulseGrid rows={7} cols={7} cellSize={4} gap={3} pattern="spiral" animate="fade" palette="ultraviolet" period={2200} waves={2} easing="snap" />
+```
+
+### static — Static
+
+Seeded shuffle + strobe envelope: tuned-between-stations TV noise.
+
+```jsx
+<PulseGrid rows={6} cols={6} cellSize={4} gap={2} pattern="sparkle" animate="fade" envelope="flash" palette="mono" period={700} waves={3} />
+```
+
+### glyph — Glyph
+
+An O drawn in dashes. Tune aspect and squareness until it matches your wordmark.
+
+```jsx
+<PulseDots arrangement="loop" count={12} length={7} thickness={3} ringSize={30} aspect={0.88} squareness={2.6} animate="fade" pattern="wave" palette="mono" period={1100} dim={0.2} />
+```
+
+### monogram — Monogram
+
+A badge built from stripes — scanlines around a loop. Tune stroke and squareness to taste.
+
+```jsx
+<PulseBars arrangement="loop" count={8} ringSize={32} aspect={1.05} squareness={2.2} stroke={10} thickness={2.5} radius={1.25} animate="fade" pattern="wave" palette="glacier" period={1100} waves={1.5} />
+```
+
+### heartbeat — Heartbeat
+
+One dot, a double-beat envelope. Lub-dub.
+
+```jsx
+<PulseDots count={1} size={12} animate="scale" pattern="pulse" envelope="heartbeat" palette="ember" colorBy="phase" period={1200} restScale={0.72} />
+```
+
+### ticker — Ticker
+
+A wide, low strip of cells — the wave runs left to right like a marquee.
+
+```jsx
+<PulseGrid rows={3} cols={14} cellSize={4} gap={2} radius={1} pattern="sweep-right" animate="fade" palette="aurora" period={1800} waves={2} />
+```
+
+### stadium — Stadium
+
+A squircle track — the wave does laps around rounded corners.
+
+```jsx
+<PulseDots arrangement="loop" count={12} squareness={4} aspect={1.15} ringSize={30} length={6} thickness={3} radius={1.5} animate="fade" pattern="wave" palette="ultraviolet" period={1100} waves={1.5} />
+```
+
+### kelp — Kelp
+
+Bars pivoting at the root as the wave passes — wind through grass.
+
+```jsx
+<PulseBars count={7} thickness={3} length={22} gap={4} origin="end" animate="sway" amplitude={16} envelope="breathe" easing="drift" pattern="wave" waves={1.5} palette="moss" period={1800} />
+```
+
+### sunburst — Sunburst
+
+Radial ticks flaring around a ring — a clock face running hot.
+
+```jsx
+<PulseDots arrangement="loop" align="radial" count={10} length={8} thickness={3} ringSize={26} animate="stretch" pattern="wave" envelope="flash" palette="ember" period={950} restScale={0.45} />
+```
+
+### drizzle — Drizzle
+
+Random cells stretching and flickering — rain streaks on a window.
+
+```jsx
+<PulseGrid rows={3} cols={10} cellSize={3.5} gap={3} radius={1.5} pattern="sparkle" animate="stretch" envelope={{ attack: 0.3, hold: 0, release: 0.5 }} palette="lagoon" period={1200} waves={4} restScale={0.25} />
+```
+
+### metronome — Metronome
+
+Two dots trading places on a hard snap. Minimal, mechanical.
+
+```jsx
+<PulseDots count={2} size={8} gap={6} pattern="alternate" animate="scale" easing="snap" palette="mono" period={640} restScale={0.35} />
+```
+
+### breather — Breather
+
+The whole block inhales together — a calm idle state, not a busy one.
+
+```jsx
+<PulseGrid rows={3} cols={3} cellSize={7} gap={3} radius={2} pattern="pulse" animate="fade-scale" envelope="breathe" easing="drift" palette="moss" period={2000} restScale={0.8} dim={0.5} />
+```
+
+### manuscript — Manuscript
+
+Flat lines growing from the left margin, like text being drafted.
+
+```jsx
+<PulseBars orientation="horizontal" count={5} thickness={3} length={34} gap={5} origin="start" animate="stretch" pattern="wave" envelope="breathe" palette="mono" period={1500} restScale={0.2} />
+```
+
+### ascent — Ascent
+
+A wide chevron fold climbing the strip — directional, insistent.
+
+```jsx
+<PulseGrid rows={4} cols={9} cellSize={5} pattern="chevron" animate="fade" palette="nocturne" period={850} waves={2} />
+```
+
+### louver — Louver
+
+Flat slats flipping around their own axis — venetian blinds in a draft.
+
+```jsx
+<PulseBars orientation="horizontal" count={5} thickness={4} length={30} gap={3} animate="flip" pattern="wave" palette="glacier" period={1400} />
+```
+
+### orbit — Orbit
+
+A ring of dots the wave keeps lapping — spinner DNA, gradient body.
+
+```jsx
+<PulseDots arrangement="loop" count={8} length={6} thickness={6} ringSize={26} animate="fade-scale" pattern="wave" period={1000} />
+```
+
+### beacon — Beacon
+
+Twelve small lights flashing fast around a tight ring — familiar shape, live color.
+
+```jsx
+<PulseDots arrangement="loop" count={12} length={3.5} thickness={3.5} ringSize={22} animate="fade" pattern="wave" envelope="flash" palette="glacier" period={700} />
+```

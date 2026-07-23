@@ -20,4 +20,6 @@ jobs:
       - run: npx tsc --noEmit -p site
       - run: npm test
       - run: npm run build
+      - run: npm run docs:agents
+      - run: git diff --exit-code -- site/public/llms.txt site/public/llms-full.txt AGENTS.md README.md README.ja.md README.zh-CN.md
       - run: npm run site:build

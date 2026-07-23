@@ -206,7 +206,37 @@ const { intensity, ping } = useStreamIntensity({ decay: 900, floor: 0.35 })
 
 ## 配方
 
-一组精选配置以 `recipes` 导出——从经典款（`typing`、`equalizer`、`orbit`、`beacon`、`metronome`），到招牌款（`monogram`、`glyph`、`heartbeat`、`sonar`、`galaxy`、`comet`、`sunburst`、`kelp`、`louver`），再到少见款（`static`、`drizzle`、`stadium`、`manuscript`、`ticker`、`ascent`、`breather`）。每个都是 `{ element, title, blurb, props }`，把 props 展开到对应组件即可。demo 站的画廊就直接渲染自这份导出。
+一组精选配置以 `recipes` 导出。每个都是 `{ element, title, blurb, props }`，把 props 展开到对应组件即可。demo 站的画廊就直接渲染自这份导出。
+
+<!-- recipes-table:start -->
+| 配方 | 组件 | 说明 |
+| --- | --- | --- |
+| `sonar` | `<PulseGrid />` | 方形波纹从中心一圈圈散开，慢而通透。 |
+| `typing` | `<PulseDots />` | 经典三点跳动，弧线被调成「跳」而不是「晃」。 |
+| `comet` | `<PulseDots />` | 亮头长尾，相位取色画出拖尾。 |
+| `equalizer` | `<PulseBars />` | 直立的条随行波呼吸——音频表的能量感。 |
+| `galaxy` | `<PulseGrid />` | 螺旋相位场——波从中心盘旋而出。 |
+| `static` | `<PulseGrid />` | 种子乱序加频闪包络——两个台之间的电视雪花。 |
+| `glyph` | `<PulseDots />` | 虚线勾出的环——调aspect与squareness贴合你的字标。 |
+| `monogram` | `<PulseBars />` | 条纹拼出的一枚徽标，扫描线绕行一周。stroke和squareness按口味调。 |
+| `heartbeat` | `<PulseDots />` | 一颗点，双峰包络。扑通、扑通。 |
+| `ticker` | `<PulseGrid />` | 低而宽的格子带，波从左向右跑马。 |
+| `stadium` | `<PulseDots />` | 方圆跑道——波在圆角上一圈圈地跑。 |
+| `kelp` | `<PulseBars />` | 条从根部摆动，波经过时像风穿过草地。 |
+| `sunburst` | `<PulseDots />` | 径向刻度绕环闪耀——转得发烫的表盘。 |
+| `drizzle` | `<PulseGrid />` | 随机格子拉伸闪烁——窗上的雨痕。 |
+| `metronome` | `<PulseDots />` | 两点硬切换位——极简、机械。 |
+| `breather` | `<PulseGrid />` | 整块同步吸气——安静的待机态，而非忙碌态。 |
+| `manuscript` | `<PulseBars />` | 从左边距长出的横线，像正在起草的文字。 |
+| `ascent` | `<PulseGrid />` | 宽幅山形折线向上爬——有方向、不停歇。 |
+| `louver` | `<PulseBars />` | 板条绕自身轴翻转——过堂风里的百叶窗。 |
+| `orbit` | `<PulseDots />` | 被波不断追圈的一环圆点——spinner的基因，渐变的身体。 |
+| `beacon` | `<PulseDots />` | 一圈小灯快速轮转，形状眼熟，颜色鲜活。 |
+<!-- recipes-table:end -->
+
+## 给 AI 助手
+
+机器可读的文档在 [react-pulsor.vercel.app/llms.txt](https://react-pulsor.vercel.app/llms.txt)（索引）与 [/llms-full.txt](https://react-pulsor.vercel.app/llms-full.txt)（完整参考，含每个配方展开后的 JSX）。npm 包内也随附一份 `AGENTS.md` 速查表。
 
 ## 开发
 
