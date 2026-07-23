@@ -1,0 +1,14 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "react-pulsor",
+  "description": "Composable React loading indicators — grids, bars and dots driven by phase fields, motion envelopes and OKLab gradients. Zero dependencies, compositor-only animation.",
+  "excludeFolders": ["src", "site/src", "scripts", ".github", "docs"],
+  "excludeFiles": ["README.ja.md", "README.zh-CN.md", "CONTRIBUTING.md", "CHANGELOG.md", "llms.txt"],
+  "rules": [
+    "arrangement defaults to \"line\"; loop-only props (ringSize, aspect, squareness, stroke, align, and length/thickness on PulseDots) require arrangement=\"loop\" first",
+    "Spread a recipe onto the component matching its element: recipes.typing.element is \"dots\", so <PulseDots {...recipes.typing.props} />",
+    "No CSS import and no provider are needed; components inject their one keyframe themselves",
+    "dim, restScale, progress and intensity are all 0..1",
+    "To make a loader react to an AI token stream, feed the intensity prop from useStreamIntensity()"
+  ]
+}
