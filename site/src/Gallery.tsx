@@ -65,13 +65,12 @@ export function Gallery({
 
   return (
     <>
-      <div className="gallery-filters" role="tablist">
+      <fieldset className="gallery-filters" aria-label="Filter recipes">
         {FILTERS.map((f) => (
           <button
             type="button"
             key={f}
-            role="tab"
-            aria-selected={filter === f}
+            aria-pressed={filter === f}
             className={filter === f ? "chip active" : "chip"}
             onClick={() => setFilter(f)}
           >
@@ -79,7 +78,7 @@ export function Gallery({
             <span className="chip-count">{counts[f as ElementKind] ?? 0}</span>
           </button>
         ))}
-      </div>
+      </fieldset>
 
       <div className="cards">
         {shown.map(([name, recipe], i) => (

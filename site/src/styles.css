@@ -31,6 +31,9 @@
   --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
   /* structural dividers go hairline on high-density displays */
   --hairline: 1px;
+  --ease-out: cubic-bezier(0.2, 0, 0, 1);
+  /* the print-green used on ink-filled plates (chip counts, card glow fallback) */
+  --accent-print: #17843b;
 }
 
 @media (min-resolution: 2dppx) {
@@ -45,11 +48,20 @@
 
 html {
   color-scheme: dark;
-  scroll-behavior: smooth;
+  /* min-content of any single control can exceed tiny viewports; the page
+     itself must never scroll sideways */
+  overflow-x: clip;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
   margin: 0;
+  overflow-x: clip;
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
@@ -67,6 +79,14 @@ button {
   border: none;
   cursor: pointer;
   padding: 0;
+}
+
+/* control groups are fieldsets; strip the form chrome */
+fieldset {
+  margin: 0;
+  padding: 0;
+  border: none;
+  min-inline-size: 0;
 }
 
 a {
@@ -229,7 +249,7 @@ html:lang(ja) .card-blurb {
 }
 
 .lang-btn.active {
-  color: #16150f;
+  color: var(--on-ink);
   background: var(--ink);
 }
 
@@ -399,9 +419,12 @@ html:lang(ja) .card-blurb {
   margin: 76px 0 18px;
 }
 
+/* section headings — pixel-type plate with a green dash; rendered as h2 */
 .eyebrow {
+  margin: 0;
   font-family: var(--font-pixel);
   font-size: 13px;
+  font-weight: 400;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink);
@@ -638,7 +661,7 @@ html:lang(ja) .card-blurb {
 }
 
 .feel-targets.flash {
-  animation: ctl-flash 700ms ease;
+  animation: ctl-flash 700ms var(--ease-out);
 }
 
 @keyframes ctl-flash {
@@ -728,6 +751,9 @@ html:lang(ja) .card-blurb {
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
+  /* the UA default is a fixed ~129px that refuses to shrink with its track */
+  width: 100%;
+  min-width: 0;
   height: 2px;
   outline: none;
   background: linear-gradient(
@@ -764,6 +790,8 @@ input[type="range"]::-moz-range-thumb {
 
 .segmented {
   display: inline-flex;
+  flex-wrap: wrap;
+  max-width: 100%;
   background: var(--panel);
   border: 1px solid var(--border);
   padding: 2px;
@@ -898,33 +926,25 @@ input[type="range"]::-moz-range-thumb {
 
 .code-head {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  gap: 8px;
   padding: 9px 14px;
   border-bottom: 1px solid var(--ink);
 }
 
-.code-dots {
-  display: inline-flex;
-  gap: 6px;
+/* what the snippet is, not a drawing of somebody else's window chrome */
+.code-file {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--faint);
 }
 
-.code-dots i {
-  width: 9px;
-  height: 9px;
-  border: 1px solid var(--ink);
-}
-
-.code-dots i:nth-child(1) {
-  background: #d0453e;
-}
-
-.code-dots i:nth-child(2) {
-  background: #e0a63c;
-}
-
-.code-dots i:nth-child(3) {
-  background: #17843b;
+.code-file::before {
+  content: "// ";
+  color: var(--accent);
 }
 
 .code-actions {
@@ -967,6 +987,7 @@ button.label-btn {
   gap: 7px;
   height: 26px;
   padding: 0 10px;
+  white-space: nowrap;
   font-family: var(--mono);
   font-size: 12px;
   color: var(--muted);
@@ -1064,7 +1085,7 @@ button.label-btn:hover {
 }
 
 .chip.active {
-  color: #16150f;
+  color: var(--on-ink);
   border-color: var(--ink);
   background: var(--ink);
 }
@@ -1076,7 +1097,7 @@ button.label-btn:hover {
 }
 
 .chip.active .chip-count {
-  color: #17843b;
+  color: var(--accent-print);
 }
 
 .cards {
@@ -1086,7 +1107,7 @@ button.label-btn:hover {
 }
 
 .card {
-  --accent-card: #17843b;
+  --accent-card: var(--accent-print);
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -1200,8 +1221,8 @@ button.label-btn:hover {
   opacity: 0;
   transform: translateY(12px);
   transition:
-    opacity 0.5s ease,
-    transform 0.5s ease;
+    opacity 0.5s var(--ease-out),
+    transform 0.5s var(--ease-out);
 }
 
 .reveal.in {
@@ -1315,7 +1336,7 @@ button.label-btn:hover {
   background: var(--ink);
   padding: 7px 16px;
   box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
-  animation: toast-in 160ms cubic-bezier(0.22, 0.9, 0.36, 1);
+  animation: toast-in 160ms var(--ease-out);
 }
 
 @keyframes toast-in {
@@ -1390,5 +1411,21 @@ button.label-btn:hover {
 
   .nav-links {
     gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* the label column shrinks and the caption falls back under it */
+  .ctl-row {
+    grid-template-columns: 76px 1fr auto;
+  }
+
+  .ctl-caption {
+    padding-left: 0;
+  }
+
+  /* not enough floor for both the tag readout and the export buttons */
+  .hud-bl {
+    display: none;
   }
 }

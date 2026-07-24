@@ -80,7 +80,7 @@ function ScrollProgress() {
 function Eyebrow({ title }: { title: string }) {
   return (
     <div className="eyebrow-block">
-      <span className="eyebrow">{title}</span>
+      <h2 className="eyebrow">{title}</h2>
     </div>
   )
 }
@@ -139,10 +139,10 @@ export default function App() {
     toastTimer.current = window.setTimeout(() => setToast(null), 1600)
   }
 
+  // The check-icon swap on the button is the confirmation; no toast on top.
   const copy = (text: string, which: "code" | "install" | "css" | "link" | "svg") => {
     navigator.clipboard.writeText(text).then(() => {
       setCopied(which)
-      showToast(t.copied)
       window.setTimeout(() => setCopied((c) => (c === which ? null : c)), 1500)
     })
   }
@@ -152,7 +152,9 @@ export default function App() {
     const el = recipe.element as ElementKind
     setConfigs((cs) => ({ ...cs, [el]: recipeToConfig(recipe) }))
     setElement(el)
-    document.getElementById("playground")?.scrollIntoView({ behavior: "smooth" })
+    document.getElementById("playground")?.scrollIntoView({
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+    })
   }
 
   const patterns = element === "grid" ? GRID_PATTERNS : LINEAR_PATTERNS
@@ -210,20 +212,19 @@ export default function App() {
           <a href="https://www.npmjs.com/package/react-pulsor" target="_blank" rel="noreferrer">
             npm ↗
           </a>
-          <div className="lang-switch" role="tablist" aria-label="Language">
+          <fieldset className="lang-switch" aria-label="Language">
             {(["en", "ja", "zh"] as Lang[]).map((l) => (
               <button
                 type="button"
                 key={l}
-                role="tab"
-                aria-selected={lang === l}
+                aria-pressed={lang === l}
                 className={lang === l ? "lang-btn active" : "lang-btn"}
                 onClick={() => setLang(l)}
               >
                 {l === "en" ? "EN" : l === "zh" ? "中" : "日"}
               </button>
             ))}
-          </div>
+          </fieldset>
         </div>
       </nav>
 
@@ -919,11 +920,7 @@ export default function App() {
 
       <section className="codeblock">
         <div className="code-head">
-          <span className="code-dots" aria-hidden>
-            <i />
-            <i />
-            <i />
-          </span>
+          <span className="code-file">App.tsx</span>
           <span className="code-actions">
             <button type="button" className="label-btn" onClick={() => copy(code, "code")}>
               {copied === "code" ? <Check size={14} /> : <Code size={14} />}

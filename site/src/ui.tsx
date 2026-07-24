@@ -157,20 +157,19 @@ export function Segmented<T extends string>({
   onChange: (v: T) => void
 }) {
   return (
-    <div className="segmented" role="tablist">
+    <fieldset className="segmented">
       {options.map((o) => (
         <button
           type="button"
           key={o}
-          role="tab"
-          aria-selected={o === value}
+          aria-pressed={o === value}
           className={o === value ? "seg-btn active" : "seg-btn"}
           onClick={() => onChange(o)}
         >
           {o}
         </button>
       ))}
-    </div>
+    </fieldset>
   )
 }
 
